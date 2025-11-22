@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Creation Studio | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e3e9e7;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #74938d;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(116, 147, 141, 0.1);
+        }
+
+        .step-indicator.active {
+            background-color: #425d59;
+            color: white;
+            border-color: #425d59;
+        }
+
+        .step-indicator.completed {
+            background-color: #9db5af;
+            color: white;
+            border-color: #9db5af;
+        }
+        
+        /* Hide file input */
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .fade-enter {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence</a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">How It Works</a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 bg-soft-gradient">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-serif text-brand-900 mb-4">The Essence Form</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    This is the first step in training your AI. Please answer with as much detail as possible. Take your time; this is a tribute.
+                </p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-10 relative">
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-200 -z-10 rounded-full"></div>
+                <div class="flex justify-between items-center w-full">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="step-1-indicator" class="step-indicator active w-10 h-10 rounded-full border-2 border-brand-200 bg-white flex items-center justify-center font-medium text-sm transition-all duration-300">1</div>
+                        <span class="text-xs font-medium text-brand-800 uppercase tracking-wider">Identity</span>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="step-2-indicator" class="step-indicator w-10 h-10 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center font-medium text-sm text-gray-400 transition-all duration-300">2</div>
+                        <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Personality</span>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="step-3-indicator" class="step-indicator w-10 h-10 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center font-medium text-sm text-gray-400 transition-all duration-300">3</div>
+                        <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Artifacts</span>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="flex flex-col items-center gap-2">
+                        <div id="step-4-indicator" class="step-indicator w-10 h-10 rounded-full border-2 border-gray-200 bg-white flex items-center justify-center font-medium text-sm text-gray-400 transition-all duration-300">4</div>
+                        <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Soul</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <form id="creation-form" class="glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden" action="https://formsubmit.co/support@gamingodyssey.in" method="POST" enctype="multipart/form-data" onsubmit="handleSubmit(event)">
+                
+                <!-- FormSubmit Configuration -->
+                <input type="hidden" name="_subject" value="New AI Persona Request - MemoriaLife">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <!-- Optional: Redirect to a thank you page, or leave blank for default FormSubmit page -->
+                <!-- <input type="hidden" name="_next" value="https://yourwebsite.com/thankyou.html"> -->
+
+                <!-- Step 1: Identity -->
+                <div id="step-1" class="step-content fade-enter">
+                    <h2 class="text-2xl font-serif text-brand-900 mb-8 border-b border-gray-100 pb-4">The Identity</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name of Subject <span class="text-red-400">*</span></label>
+                            <input type="text" name="subject_name" required class="form-input" placeholder="E.g. Dr. Rajesh Kumar">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                            <input type="date" name="date_of_birth" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Background & Profession <span class="text-red-400">*</span></label>
+                        <textarea rows="3" name="background_story" required class="form-input" placeholder="E.g. A retired professor of history who loved gardening. Born in Pune..."></textarea>
+                        <p class="text-xs text-gray-500 mt-2">Describe their life's work and origin story.</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Relationship to You</label>
+                        <input type="text" name="relationship" class="form-input" placeholder="E.g. Grandfather, Mother, Partner">
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="nextStep(2)" class="bg-brand-800 text-white px-8 py-3 rounded-full hover:bg-brand-900 transition-colors flex items-center gap-2">
+                            Next: Personality <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Essence -->
+                <div id="step-2" class="step-content hidden fade-enter">
+                    <h2 class="text-2xl font-serif text-brand-900 mb-8 border-b border-gray-100 pb-4">The Essence</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Dominant Personality Traits <span class="text-red-400">*</span></label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                            <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-brand-50 transition-colors">
+                                <input type="checkbox" name="traits[]" value="Humorous" class="text-brand-600 focus:ring-brand-500 rounded">
+                                <span class="text-sm">Humorous</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-brand-50 transition-colors">
+                                <input type="checkbox" name="traits[]" value="Stoic" class="text-brand-600 focus:ring-brand-500 rounded">
+                                <span class="text-sm">Stoic</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-brand-50 transition-colors">
+                                <input type="checkbox" name="traits[]" value="Nurturing" class="text-brand-600 focus:ring-brand-500 rounded">
+                                <span class="text-sm">Nurturing</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-brand-50 transition-colors">
+                                <input type="checkbox" name="traits[]" value="Intellectual" class="text-brand-600 focus:ring-brand-500 rounded">
+                                <span class="text-sm">Intellectual</span>
+                            </label>
+                        </div>
+                        <input type="text" name="other_traits" class="form-input mt-2" placeholder="Other traits (comma separated)">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Favorite Sayings / Catchphrases <span class="text-red-400">*</span></label>
+                        <textarea rows="4" name="catchphrases" required class="form-input" placeholder="E.g. 'Slow and steady wins the race', 'Have you eaten yet?', 'Beta, let me tell you a story...'"></textarea>
+                        <p class="text-xs text-gray-500 mt-2">Specific phrases help the AI sound authentic.</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Hobbies, Likes & Dislikes</label>
+                        <textarea rows="3" name="hobbies_likes" class="form-input" placeholder="Loves Cricket and old Hindi music. Hates spicy food and being late."></textarea>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(1)" class="text-gray-500 hover:text-brand-800 font-medium px-4">Back</button>
+                        <button type="button" onclick="nextStep(3)" class="bg-brand-800 text-white px-8 py-3 rounded-full hover:bg-brand-900 transition-colors flex items-center gap-2">
+                            Next: Artifacts <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Artifacts -->
+                <div id="step-3" class="step-content hidden fade-enter">
+                    <h2 class="text-2xl font-serif text-brand-900 mb-8 border-b border-gray-100 pb-4">The Artifacts</h2>
+                    
+                    <!-- Audio Upload -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-brand-900 mb-2">Voice Samples (Audio/Video) <span class="text-red-400">*</span></label>
+                        <div class="file-input-wrapper border-2 border-dashed border-brand-300 rounded-xl p-8 text-center hover:bg-brand-50 transition-colors cursor-pointer relative group">
+                            <input type="file" name="voice_samples" id="voice-upload" multiple accept="audio/*,video/*" onchange="updateFileName('voice-upload', 'voice-file-name')">
+                            <div class="absolute inset-0 w-full h-full" onclick="document.getElementById('voice-upload').click()"></div>
+                            <i data-lucide="mic" class="w-10 h-10 text-brand-400 mx-auto mb-4"></i>
+                            <p class="text-sm text-gray-600 font-medium">Click to upload voice recordings</p>
+                            <p class="text-xs text-gray-400 mt-1">MP3, WAV, MP4 (Max 50MB)</p>
+                            <p id="voice-file-name" class="text-brand-600 text-sm mt-4 font-semibold"></p>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">We need at least 15 minutes of clear speech for the best clone.</p>
+                    </div>
+
+                    <!-- Photo Upload -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-brand-900 mb-2">Photos or Video for Avatar</label>
+                        <div class="file-input-wrapper border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer relative group">
+                            <input type="file" name="avatar_photos" id="photo-upload" multiple accept="image/*,video/*" onchange="updateFileName('photo-upload', 'photo-file-name')">
+                            <div class="absolute inset-0 w-full h-full" onclick="document.getElementById('photo-upload').click()"></div>
+                            <i data-lucide="image" class="w-10 h-10 text-gray-400 mx-auto mb-4"></i>
+                            <p class="text-sm text-gray-600 font-medium">Click to upload visual references</p>
+                            <p class="text-xs text-gray-400 mt-1">JPG, PNG (High Resolution preferred)</p>
+                            <p id="photo-file-name" class="text-brand-600 text-sm mt-4 font-semibold"></p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="prevStep(2)" class="text-gray-500 hover:text-brand-800 font-medium px-4">Back</button>
+                        <button type="button" onclick="nextStep(4)" class="bg-brand-800 text-white px-8 py-3 rounded-full hover:bg-brand-900 transition-colors flex items-center gap-2">
+                            Next: The Soul <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Soul -->
+                <div id="step-4" class="step-content hidden fade-enter">
+                    <h2 class="text-2xl font-serif text-brand-900 mb-8 border-b border-gray-100 pb-4">The Soul</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Emotional Tone</label>
+                        <select name="emotional_tone" class="form-input">
+                            <option value="Warm & Comforting">Warm & Comforting</option>
+                            <option value="Cheerful & Energetic">Cheerful & Energetic</option>
+                            <option value="Wise & Reflective">Wise & Reflective</option>
+                            <option value="Formal & Respectful">Formal & Respectful</option>
+                            <option value="Witty & Joking">Witty & Joking</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Core Memories to Include</label>
+                        <textarea rows="4" name="core_memories" class="form-input" placeholder="The time we went to Shimla in 1990... The story about how he met Grandma..."></textarea>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Additional Instructions</label>
+                        <textarea rows="3" name="extra_instructions" class="form-input" placeholder="Any sensitive topics to avoid, or specific names to remember?"></textarea>
+                    </div>
+
+                    <div class="bg-brand-50 p-4 rounded-lg mb-8 border border-brand-100 flex items-start gap-3">
+                        <input type="checkbox" name="legal_consent" required class="mt-1 text-brand-600 focus:ring-brand-500 rounded">
+                        <label class="text-xs text-gray-600">
+                            I confirm that I have the legal right and consent to upload this data for the purpose of creating an AI digital twin. I agree to MemoriaLife's <a href="#" class="underline text-brand-600">Privacy Policy</a> and <a href="#" class="underline text-brand-600">Terms of Service</a>.
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <button type="button" onclick="prevStep(3)" class="text-gray-500 hover:text-brand-800 font-medium px-4">Back</button>
+                        <button type="submit" class="bg-brand-600 text-white px-10 py-4 rounded-full hover:bg-brand-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium text-lg flex items-center gap-2">
+                            Initialize AI Model <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Navigation Logic
+        function nextStep(targetStep) {
+            const currentStep = targetStep - 1;
+            const currentInputs = document.querySelectorAll(`#step-${currentStep} input[required], #step-${currentStep} textarea[required]`);
+            let valid = true;
+            currentInputs.forEach(input => {
+                if (!input.value) {
+                    valid = false;
+                    input.style.borderColor = '#ef4444'; // Red border error
+                    setTimeout(() => input.style.borderColor = '#e3e9e7', 2000);
+                }
+            });
+
+            if (valid) {
+                document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+                document.getElementById(`step-${targetStep}`).classList.remove('hidden');
+                
+                // Update Indicators
+                for(let i = 1; i < targetStep; i++) {
+                    const indicator = document.getElementById(`step-${i}-indicator`);
+                    indicator.classList.remove('active');
+                    indicator.classList.add('completed');
+                    indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                }
+                const currentIndicator = document.getElementById(`step-${targetStep}-indicator`);
+                currentIndicator.classList.add('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert('Please fill in all required fields marked with *');
+            }
+        }
+
+        function prevStep(targetStep) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step-${targetStep}`).classList.remove('hidden');
+            
+            // Update Indicators
+             const currentIndicator = document.getElementById(`step-${targetStep+1}-indicator`);
+             currentIndicator.classList.remove('active');
+             const targetIndicator = document.getElementById(`step-${targetStep}-indicator`);
+             targetIndicator.classList.add('active');
+             targetIndicator.classList.remove('completed');
+             targetIndicator.innerText = targetStep;
+        }
+
+        // File Upload UI
+        function updateFileName(inputId, displayId) {
+            const input = document.getElementById(inputId);
+            const display = document.getElementById(displayId);
+            if (input.files.length > 0) {
+                display.textContent = `${input.files.length} file(s) selected: ${input.files[0].name}...`;
+            } else {
+                display.textContent = '';
+            }
+        }
+
+        function handleSubmit(e) {
+            // Prevent immediate default submit to show UI animation
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Uploading to Secure Vault...';
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // Simulate a small delay for UX, then submit
+            setTimeout(() => {
+                form.submit(); // Actually submit to FormSubmit
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

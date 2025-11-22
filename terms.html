@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'soft-gradient': 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .legal-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: #2f3c3a;
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e3e9e7;
+            padding-bottom: 0.5rem;
+        }
+
+        .legal-content h3 {
+            font-family: 'Inter', sans-serif;
+            color: #425d59;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .legal-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .legal-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+
+        .legal-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence</a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">How It Works</a>
+                    <a href="booking.html" class="bg-brand-600 text-white px-6 py-2.5 rounded-full text-sm hover:bg-brand-800 transition-all shadow-md hover:shadow-lg">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full h-screen">
+            <div class="px-4 pt-4 pb-8 space-y-4 shadow-lg">
+                <a href="services.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">Services</a>
+                <a href="how-it-works.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">How It Works</a>
+                <a href="booking.html" class="block text-center bg-brand-600 text-white px-4 py-3 rounded-lg mt-4">Book Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="min-h-screen pt-32 pb-24 bg-soft-gradient">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Header -->
+            <div class="text-center mb-16 fade-in">
+                <h1 class="text-3xl md:text-5xl font-serif text-brand-900 mb-4">Terms & Conditions</h1>
+                <p class="text-gray-500 text-sm">Effective Date: October 24, 2023</p>
+            </div>
+
+            <!-- Policy Content -->
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-brand-100 legal-content fade-in" style="animation-delay: 0.1s">
+                
+                <p>
+                    Welcome to <strong>MemoriaLife Technologies</strong>. By accessing our website, booking a consultation, or purchasing any of our legacy preservation plans, you agree to be bound by these Terms and Conditions ("Terms"). Please read them carefully. If you do not agree to these Terms, you may not access or use our Services.
+                </p>
+
+                <h2>1. Definitions</h2>
+                <ul>
+                    <li><strong>"Service"</strong> refers to the AI creation, voice cloning, 3D rendering, and hosting services provided by MemoriaLife.</li>
+                    <li><strong>"User"</strong> or <strong>"Client"</strong> refers to the individual purchasing the service or the authorized representative of a subject.</li>
+                    <li><strong>"Subject"</strong> refers to the individual whose digital persona is being created (may be the User or a third party/deceased individual).</li>
+                    <li><strong>"Artifacts"</strong> refer to the voice samples, photos, videos, and biographical text uploaded by the User.</li>
+                </ul>
+
+                <h2>2. Description of Services</h2>
+                <p>MemoriaLife provides advanced AI-driven legacy preservation services. These include:</p>
+                <ul>
+                    <li><strong>Basic Chatbot:</strong> Text-based AI trained on personal history.</li>
+                    <li><strong>Voice Edition:</strong> Neural voice synthesis based on user-provided audio.</li>
+                    <li><strong>3D Persona & Real Presence:</strong> Visual avatars and projection hardware systems.</li>
+                </ul>
+                <p>The Services are intended for personal, memorial, and celebratory use only. They are not intended to replace professional medical, legal, or psychological advice.</p>
+
+                <h2>3. User Obligations & Eligibility</h2>
+                <h3>3.1 Age Requirement</h3>
+                <p>You must be at least 18 years old to use our Services. By using MemoriaLife, you represent and warrant that you are of legal age to form a binding contract.</p>
+
+                <h3>3.2 Rights to Data</h3>
+                <p>You represent and warrant that you have the legal right to upload all Artifacts provided to us. Specifically:</p>
+                <ul>
+                    <li>If creating a persona for yourself, you consent to the processing of your biometric data.</li>
+                    <li>If creating a persona for a third party (living), you must provide written, verifiable consent from that individual.</li>
+                    <li>If creating a persona for a deceased individual, you must prove you are the legal next-of-kin or executor of the estate with the authority to grant such rights.</li>
+                </ul>
+                <p>MemoriaLife reserves the right to request documentation verifying these rights at any time and to terminate services without refund if such documentation is not provided.</p>
+
+                <h2>4. Booking Fees, Payment & Pricing</h2>
+                <h3>4.1 Booking Fee</h3>
+                <p>A <strong>non-refundable booking fee of ₹650</strong> is required to initiate a consultation and secure a server slot. This fee covers administrative costs and initial data assessment.</p>
+
+                <h3>4.2 Plan Pricing</h3>
+                <p>Total plan costs (e.g., ₹25,000 for Basic, ₹1,00,000 for 3D Persona) are payable in milestones as defined in your specific Service Agreement.</p>
+
+                <h3>4.3 Recurring vs. One-Time Fees</h3>
+                <ul>
+                    <li><strong>Basic & Voice Editions:</strong> Subject to an annual hosting and maintenance fee (currently ₹799 and ₹1199 respectively) after the initial term expires.</li>
+                    <li><strong>3D Persona & Real Presence:</strong> These are one-time purchase fees. The software and hardware are delivered to the User for local execution, and no recurring cloud fees apply unless cloud backup services are separately purchased.</li>
+                </ul>
+
+                <h2>5. Cancellations & Refunds</h2>
+                <h3>5.1 Refund Policy</h3>
+                <ul>
+                    <li><strong>Booking Fee:</strong> The ₹650 booking fee is strictly non-refundable.</li>
+                    <li><strong>Service Fee:</strong> If you choose to cancel after full payment but <em>before</em> the final high-resolution rendering or voice model training is complete, you are eligible for a <strong>50% refund</strong> of the plan price.</li>
+                    <li><strong>Post-Delivery:</strong> Once the final AI model, software, or hardware has been delivered, no refunds are permitted due to the custom nature of the work.</li>
+                </ul>
+
+                <h3>5.2 Cancellation by MemoriaLife</h3>
+                <p>We reserve the right to cancel services and refund any unspent service fees if the provided Artifacts are of insufficient quality to create a viable AI model, or if the content violates our ethical guidelines (e.g., hate speech, deepfake for malicious intent).</p>
+
+                <h2>6. Intellectual Property & Data Rights</h2>
+                <h3>6.1 Your Ownership</h3>
+                <p>You retain full ownership of all original Artifacts (photos, voice samples) you upload. You also own the specific output instance (the "Persona") created for you.</p>
+
+                <h3>6.2 MemoriaLife License</h3>
+                <p>By uploading content, you grant MemoriaLife a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and process your content <em>solely</em> for the purpose of providing the Service to you. We do not claim ownership of your digital legacy.</p>
+
+                <h3>6.3 Platform IP</h3>
+                <p>MemoriaLife retains all rights, title, and interest in the underlying AI models, algorithms, software, interface designs, and proprietary technology used to generate the Persona.</p>
+
+                <h2>7. AI Behavior Disclaimer</h2>
+                <p><strong>The AI Persona is a simulation.</strong> It is generated based on probabilistic models derived from the data you provide.</p>
+                <ul>
+                    <li><strong>Accuracy:</strong> The AI may occasionally hallucinate (invent facts), misinterpret context, or respond in ways that do not perfectly reflect the Subject. MemoriaLife does not guarantee 100% historical or behavioral accuracy.</li>
+                    <li><strong>Emotional Impact:</strong> Interactions with an AI Persona can be emotionally intense. Users engage with the Service at their own risk. MemoriaLife is not liable for any psychological distress caused by the realism (or lack thereof) of the simulation.</li>
+                </ul>
+
+                <h2>8. Limitation of Liability</h2>
+                <p>To the maximum extent permitted by law, MemoriaLife shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of data, emotional distress, or loss of profits.</p>
+                <p>In no event shall MemoriaLife's aggregate liability for all claims exceed the total amount paid by you to MemoriaLife for the Service in the twelve (12) months preceding the claim.</p>
+
+                <h2>9. Modifications to Service</h2>
+                <p>We reserve the right to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice. For hardware-based plans (Real Presence), we maintain the right to substitute components of equal or greater value based on supply chain availability.</p>
+
+                <h2>10. Governing Law</h2>
+                <p>These Terms shall be governed and construed in accordance with the laws of India. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts located in Gurugram, Haryana.</p>
+
+                <h2>11. Contact Information</h2>
+                <p>For legal inquiries regarding these Terms, please contact us at:</p>
+                <div class="bg-brand-50 p-6 rounded-lg mt-4 border border-brand-100">
+                    <p class="mb-2"><strong>Legal Department</strong></p>
+                    <p class="mb-2">MemoriaLife Technologies</p>
+                    <p class="mb-2">124 Cyber City, DLF Phase 2, Gurugram, Haryana 122002, India</p>
+                    <p class="mb-0">Email: <a href="mailto:legal@memorialife.in" class="text-brand-600 hover:underline">legal@memorialife.in</a></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

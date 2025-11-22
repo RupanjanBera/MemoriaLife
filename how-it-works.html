@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'soft-gradient': 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #9db5af, transparent);
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 30px;
+            }
+        }
+        
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence <span class="text-xs text-brand-400 ml-1">(Soon)</span></a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-600 font-medium border-b border-brand-600 text-sm tracking-wide">How It Works</a>
+                    <a href="about.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">About Us</a>
+                    
+                    <a href="booking.html" class="bg-brand-600 text-white px-6 py-2.5 rounded-full text-sm hover:bg-brand-800 transition-all shadow-md hover:shadow-lg">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800 hover:text-brand-600 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full h-screen">
+            <div class="px-4 pt-4 pb-8 space-y-4 shadow-lg">
+                <a href="services.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">Services</a>
+                <a href="how-it-works.html" class="block text-brand-600 font-medium border-b border-brand-100 pb-2">How It Works</a>
+                <a href="booking.html" class="block text-center bg-brand-600 text-white px-4 py-3 rounded-lg mt-4">Book Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 text-center px-4 relative">
+        <div class="max-w-3xl mx-auto fade-in-section">
+            <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-4 block">The Process</span>
+            <h1 class="text-4xl md:text-5xl font-serif text-brand-900 mb-6">The Journey to Eternity</h1>
+            <p class="text-gray-600 font-light text-lg max-w-2xl mx-auto">
+                Creating a digital legacy is a deeply personal experience. We have simplified the process into six mindful steps to ensure clarity, privacy, and emotional comfort.
+            </p>
+        </div>
+    </header>
+
+    <!-- Timeline Section -->
+    <section class="py-12 md:py-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-5xl mx-auto relative">
+            <!-- Vertical Connector Line -->
+            <div class="timeline-line hidden md:block"></div>
+            
+            <!-- Mobile Line (Left Aligned) -->
+            <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-brand-300 to-transparent md:hidden"></div>
+
+            <!-- Step 1: Choose Plan -->
+            <div class="relative mb-16 md:mb-24 fade-in-section">
+                <div class="md:flex items-center justify-between w-full">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <h3 class="text-2xl font-serif text-brand-900">Select Your Legacy</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">Explore our tiers—from text-based memories to full 3D avatars. Choose the medium that best represents the essence you wish to preserve.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-lg z-10 border-4 border-white">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pl-0 md:pl-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">Select Your Legacy</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                            <div class="flex items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-brand-100 px-2 py-1 rounded text-brand-600">Step 1</span>
+                            </div>
+                            <p class="text-gray-600 text-sm md:hidden">Explore our tiers and choose the medium that best represents you.</p>
+                            <ul class="hidden md:block space-y-2 text-sm text-gray-500 mt-2">
+                                <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Compare Features</li>
+                                <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Review Samples</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Booking -->
+            <div class="relative mb-16 md:mb-24 fade-in-section">
+                <div class="md:flex items-center justify-between w-full flex-row-reverse">
+                    <div class="hidden md:block w-5/12 text-left pl-8">
+                        <h3 class="text-2xl font-serif text-brand-900">Secure Reservation</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">Pay a nominal booking fee of ₹650 to initiate the process. This secures your secure data vault and assigns a personal preservation specialist.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-brand-300 text-brand-600 flex items-center justify-center shadow-md z-10">
+                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pr-0 md:pr-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">Secure Reservation</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl text-left md:text-right">
+                            <div class="flex md:justify-end items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-brand-100 px-2 py-1 rounded text-brand-600">Step 2</span>
+                            </div>
+                            <p class="text-gray-600 text-sm md:hidden">Pay the ₹650 booking fee to secure your secure data vault.</p>
+                            <div class="hidden md:block mt-2">
+                                <span class="text-2xl font-medium text-brand-900">₹650</span>
+                                <span class="text-xs text-gray-400 block">Refundable within 7 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Form -->
+            <div class="relative mb-16 md:mb-24 fade-in-section">
+                <div class="md:flex items-center justify-between w-full">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <h3 class="text-2xl font-serif text-brand-900">Personality Profiling</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">Complete our detailed 'Essence Form'. This covers life history, mannerisms, core memories, and specific phrases that make the persona authentic.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-brand-300 text-brand-600 flex items-center justify-center shadow-md z-10">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pl-0 md:pl-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">Personality Profiling</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl">
+                            <div class="flex items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-brand-100 px-2 py-1 rounded text-brand-600">Step 3</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Complete the 'Essence Form' covering life history and mannerisms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Upload -->
+            <div class="relative mb-16 md:mb-24 fade-in-section">
+                <div class="md:flex items-center justify-between w-full flex-row-reverse">
+                    <div class="hidden md:block w-5/12 text-left pl-8">
+                        <h3 class="text-2xl font-serif text-brand-900">Upload Artifacts</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">Upload 15-30 minutes of clear voice samples and high-resolution photos. Our secure portal ensures your data is encrypted during transfer.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-white border-2 border-brand-300 text-brand-600 flex items-center justify-center shadow-md z-10">
+                        <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pr-0 md:pr-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">Upload Artifacts</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl text-left md:text-right">
+                            <div class="flex md:justify-end items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-brand-100 px-2 py-1 rounded text-brand-600">Step 4</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Upload voice samples and photos via our secure portal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Training -->
+            <div class="relative mb-16 md:mb-24 fade-in-section">
+                <div class="md:flex items-center justify-between w-full">
+                    <div class="hidden md:block w-5/12 text-right pr-8">
+                        <h3 class="text-2xl font-serif text-brand-900">AI Synthesis</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">Our engineers and neural networks get to work. We train the voice model, animate the avatar, and fine-tune the conversational logic.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center shadow-inner z-10">
+                        <i data-lucide="cpu" class="w-5 h-5 animate-pulse"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pl-0 md:pl-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">AI Synthesis</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl bg-brand-50/50">
+                            <div class="flex items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-white border border-brand-200 px-2 py-1 rounded text-brand-600">Step 5</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Our neural networks train the voice model and animate the avatar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Delivery -->
+            <div class="relative fade-in-section">
+                <div class="md:flex items-center justify-between w-full flex-row-reverse">
+                    <div class="hidden md:block w-5/12 text-left pl-8">
+                        <h3 class="text-2xl font-serif text-brand-900">Delivery & Access</h3>
+                        <p class="text-gray-600 mt-2 text-sm leading-relaxed">You receive access to your private MemoriaLife Vault. Share access keys with family members or set time-capsule triggers for future release.</p>
+                    </div>
+                    
+                    <div class="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-brand-800 text-white flex items-center justify-center shadow-xl z-10">
+                        <i data-lucide="gift" class="w-5 h-5"></i>
+                    </div>
+
+                    <div class="ml-20 md:ml-0 md:w-5/12 pr-0 md:pr-8">
+                        <div class="md:hidden mb-2">
+                            <h3 class="text-xl font-serif text-brand-900">Delivery</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl text-left md:text-right border-t-4 border-brand-600">
+                            <div class="flex md:justify-end items-center gap-3 text-sm text-brand-800 font-medium mb-2">
+                                <span class="text-xs bg-brand-100 px-2 py-1 rounded text-brand-600">Final Step</span>
+                            </div>
+                            <p class="text-gray-600 text-sm">Receive access to your private Vault and share keys with family.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delivery Times -->
+    <section class="py-16 bg-white/60">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-10 fade-in-section">
+                <h2 class="text-2xl font-serif text-brand-900">Estimated Completion Times</h2>
+                <p class="text-sm text-gray-500 mt-2">Time is taken from the moment all data is uploaded.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in-section">
+                <div class="bg-white p-6 rounded-lg border border-gray-100 text-center shadow-sm">
+                    <div class="text-brand-500 font-medium mb-1">Basic Chatbot</div>
+                    <div class="text-2xl font-serif text-brand-900">48-72 Hours</div>
+                </div>
+                <div class="bg-white p-6 rounded-lg border border-gray-100 text-center shadow-sm">
+                    <div class="text-brand-500 font-medium mb-1">Voice Edition</div>
+                    <div class="text-2xl font-serif text-brand-900">5-7 Days</div>
+                </div>
+                <div class="bg-white p-6 rounded-lg border border-gray-100 text-center shadow-sm">
+                    <div class="text-brand-500 font-medium mb-1">3D Persona</div>
+                    <div class="text-2xl font-serif text-brand-900">2-4 Weeks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-24 px-4 text-center">
+        <div class="max-w-2xl mx-auto fade-in-section">
+            <h2 class="text-3xl font-serif text-brand-900 mb-6">Ready to begin your legacy?</h2>
+            <a href="booking.html" class="inline-block bg-brand-800 text-white px-10 py-4 rounded-full text-lg font-medium hover:bg-brand-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                Start Your Journey
+            </a>
+            <p class="mt-4 text-sm text-gray-500">Booking fee is fully refundable for 7 days.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        });
+        document.querySelectorAll('.fade-in-section').forEach((section) => observer.observe(section));
+    </script>
+</body>
+</html>

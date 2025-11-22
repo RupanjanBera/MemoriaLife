@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'soft-gradient': 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Accordion Styles */
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(227, 233, 231, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .accordion-item.active .accordion-content {
+            opacity: 1;
+        }
+        
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.active {
+            background: white;
+            border-color: #9db5af;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence</a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">How It Works</a>
+                    <a href="booking.html" class="bg-brand-600 text-white px-6 py-2.5 rounded-full text-sm hover:bg-brand-800 transition-all shadow-md hover:shadow-lg">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full h-screen">
+            <div class="px-4 pt-4 pb-8 space-y-4 shadow-lg">
+                <a href="services.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">Services</a>
+                <a href="how-it-works.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">How It Works</a>
+                <a href="booking.html" class="block text-center bg-brand-600 text-white px-4 py-3 rounded-lg mt-4">Book Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="min-h-screen pt-32 pb-24 bg-soft-gradient">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Header -->
+            <div class="text-center mb-12 fade-in">
+                <h1 class="text-3xl md:text-5xl font-serif text-brand-900 mb-6">Common Questions</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Understanding the process of digital legacy creation is important. We have compiled answers to help you make an informed decision.
+                </p>
+                
+                <!-- Search Bar -->
+                <div class="mt-8 relative max-w-lg mx-auto">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-5 w-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="search-faq" placeholder="Search for answers (e.g., 'privacy', 'voice', 'refund')" 
+                           class="block w-full pl-12 pr-4 py-4 bg-white border border-gray-200 rounded-full leading-5 placeholder-gray-400 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 shadow-sm transition-all">
+                </div>
+            </div>
+
+            <!-- FAQ Categories -->
+            <div class="space-y-12" id="faq-container">
+                
+                <!-- Category 1: Essentials -->
+                <div class="faq-category fade-in" style="animation-delay: 0.1s">
+                    <h3 class="text-lg font-serif text-brand-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="sparkles" class="w-5 h-5 text-brand-500"></i> The Essentials
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Q1 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">What information is required to start?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    We begin with a comprehensive "Essence Form" which covers biographical details, personality traits, and core memories. For Voice and 3D plans, we require 15-30 minutes of high-quality audio recordings and several clear photographs from different angles.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Can I create a persona for someone who has passed away?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    Yes. Posthumous preservation is a core service. You will need to provide existing audio/video samples. Please note that you must prove legal next-of-kin status to authorize the creation of a digital likeness for a deceased individual.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">What are the delivery times?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    Timelines vary by complexity:
+                                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                                        <li><strong>Basic Chatbot:</strong> 48-72 hours</li>
+                                        <li><strong>Voice Edition:</strong> 5-7 business days</li>
+                                        <li><strong>3D Persona:</strong> 2-4 weeks due to complex rendering</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q4 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Is the process customizable?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    Absolutely. You can define specific topics the AI should avoid, emphasize certain life periods, or even request specific catchphrases. The AI is tailored to your preferences, not a generic template.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2: Privacy & Ethics -->
+                <div class="faq-category fade-in" style="animation-delay: 0.2s">
+                    <h3 class="text-lg font-serif text-brand-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-brand-500"></i> Privacy, Data & Ethics
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Q5 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Who owns the data?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    <strong>You do.</strong> MemoriaLife claims no ownership over your voice models, images, or chat logs. We act solely as a secure custodian. You may request a full data deletion and export at any time.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q6 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Is my data used to train public AI models?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    No. We operate on isolated instances. Your voice data is used exclusively to train <em>your</em> specific model. It is never aggregated into a public dataset or used to improve our general algorithms without explicit written consent.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q7 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">How safe is the voice cloning technology?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    We implement strict 'anti-deepfake' protocols. The voice model can only be accessed via our authenticated secure vault. It cannot be downloaded as a standalone tool to generate audio outside our ecosystem.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q8 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">How is the data secured?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    We use AES-256 encryption for data at rest and TLS 1.3 for data in transit. Access is restricted to you and the specific beneficiaries you designate with unique access keys.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3: Technology -->
+                <div class="faq-category fade-in" style="animation-delay: 0.3s">
+                    <h3 class="text-lg font-serif text-brand-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-5 h-5 text-brand-500"></i> Technology & Features
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Q9 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">How realistic is the voice cloning?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    Our advanced neural synthesis captures tone, accent, breath pauses, and emotional cadence. With 30 minutes of clear audio, the result is often indistinguishable from the original speaker to the human ear.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q10 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">How does 3D Persona creation work?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    We map facial topography from photographs to create a rigged 3D mesh animated by AI. <strong>Delivery:</strong> You receive a standalone executable application to run on your personal computer, giving you full ownership of the system without needing cloud servers.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q11 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">What is the 'Real Presence' Projector Edition?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    This is our flagship all-in-one hardware solution. You receive a <strong>dedicated computer pre-loaded with the software</strong> along with a <strong>specialized projector</strong>. This setup projects the life-size 3D figure into your room, running entirely offline on the provided hardware.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q12 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Can the AI learn new things after creation?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    By default, the AI is "frozen" in time to preserve the authentic personality. However, you can manually add new memories (e.g., "Your granddaughter just graduated") via the update dashboard if you wish for the AI to be aware of current events.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 4: Pricing -->
+                <div class="faq-category fade-in" style="animation-delay: 0.4s">
+                    <h3 class="text-lg font-serif text-brand-900 mb-6 flex items-center gap-2">
+                        <i data-lucide="credit-card" class="w-5 h-5 text-brand-500"></i> Pricing & Refunds
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Q13 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">What is the refund policy?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    The ₹650 booking fee is non-refundable as it covers initial consultation and server allocation. However, for the main plan cost, if you are not satisfied with the initial demo, we offer a 50% refund before final high-resolution rendering is completed.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q14 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Is there a recurring subscription fee?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    It depends on your plan:
+                                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                                        <li><strong>Basic Chatbot:</strong> Recurring fee of <strong>₹799/year</strong> for server hosting.</li>
+                                        <li><strong>Voice Edition:</strong> Recurring fee of <strong>₹1199/year</strong> for neural voice processing.</li>
+                                        <li><strong>3D Persona & Real Presence:</strong> These are <strong>One-Time Fees</strong>. Since you receive the software/hardware to run locally, there are no recurring costs.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q15 -->
+                        <div class="accordion-item rounded-xl overflow-hidden">
+                            <button class="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none">
+                                <span class="font-medium text-brand-900">Can I upgrade my plan later?</span>
+                                <i data-lucide="chevron-down" class="accordion-icon w-5 h-5 text-gray-400"></i>
+                            </button>
+                            <div class="accordion-content bg-white/50">
+                                <div class="px-6 pb-6 text-gray-600 text-sm leading-relaxed">
+                                    Yes. You can upgrade from Basic to Voice, or Voice to 3D at any time by paying the difference in the current tier pricing plus a small reprocessing fee.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contact Footer -->
+            <div class="mt-16 text-center">
+                <p class="text-gray-600 mb-4">Still have questions?</p>
+                <a href="booking.html" class="text-brand-600 font-medium hover:text-brand-800 underline decoration-brand-300 underline-offset-4">Contact our Support Team</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Accordion Logic
+        const accordions = document.querySelectorAll('.accordion-item button');
+
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                const item = this.parentElement;
+                const content = this.nextElementSibling;
+                
+                // Close other open items (optional - for "one open at a time" feel)
+                document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                    }
+                });
+
+                // Toggle current
+                item.classList.toggle('active');
+                
+                if (item.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } else {
+                    content.style.maxHeight = null;
+                }
+            });
+        });
+
+        // Search Logic
+        const searchInput = document.getElementById('search-faq');
+        const faqContainer = document.getElementById('faq-container');
+        const questions = document.querySelectorAll('.accordion-item');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            
+            questions.forEach(q => {
+                const questionText = q.querySelector('.font-medium').innerText.toLowerCase();
+                const answerText = q.querySelector('.accordion-content').innerText.toLowerCase();
+                
+                if (questionText.includes(term) || answerText.includes(term)) {
+                    q.style.display = "block";
+                } else {
+                    q.style.display = "none";
+                }
+            });
+
+            // Hide empty categories
+            document.querySelectorAll('.faq-category').forEach(cat => {
+                const visibleItems = cat.querySelectorAll('.accordion-item[style="display: block;"]');
+                // Note: style might be empty string initially which means block
+                const allItems = cat.querySelectorAll('.accordion-item');
+                let hasVisible = false;
+                
+                allItems.forEach(item => {
+                    if(item.style.display !== 'none') hasVisible = true;
+                });
+
+                if(hasVisible) {
+                    cat.style.display = "block";
+                } else {
+                    cat.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

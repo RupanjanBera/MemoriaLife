@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Philosophy | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'soft-gradient': 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Glowing Divider */
+        .glow-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #9db5af, transparent);
+            position: relative;
+            margin: 4rem 0;
+            opacity: 0.6;
+        }
+        
+        .glow-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 1px;
+            background: inherit;
+            filter: blur(2px);
+        }
+
+        /* Typography Enhancements */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        p {
+            line-height: 1.8;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Quote Mark styling */
+        .quote-mark {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            line-height: 0.5;
+            color: #e3e9e7;
+            position: absolute;
+            z-index: -1;
+        }
+
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence</a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">How It Works</a>
+                    <a href="about.html" class="text-brand-600 font-medium border-b border-brand-600 text-sm tracking-wide">About Us</a>
+                    
+                    <a href="booking.html" class="bg-brand-600 text-white px-6 py-2.5 rounded-full text-sm hover:bg-brand-800 transition-all shadow-md hover:shadow-lg">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full h-screen">
+            <div class="px-4 pt-4 pb-8 space-y-4 shadow-lg">
+                <a href="services.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">Services</a>
+                <a href="how-it-works.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">How It Works</a>
+                <a href="about.html" class="block text-brand-600 font-medium border-b border-brand-100 pb-2">About Us</a>
+                <a href="booking.html" class="block text-center bg-brand-600 text-white px-4 py-3 rounded-lg mt-4">Book Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-40 pb-20 text-center px-4 bg-soft-gradient relative overflow-hidden">
+        <!-- Abstract Background Element -->
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-brand-100 rounded-full filter blur-[120px] opacity-40 pointer-events-none -z-10"></div>
+
+        <div class="max-w-4xl mx-auto fade-in">
+            <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-6 block">Our Why</span>
+            <h1 class="text-5xl md:text-7xl text-brand-900 mb-8 leading-tight">
+                Preserving the<br><span class="italic text-brand-600">Unspeakable Bond.</span>
+            </h1>
+            <p class="text-gray-600 font-light text-xl max-w-2xl mx-auto leading-relaxed">
+                We believe that love transcends the physical realm. Our mission is not to replace those we've lost, but to keep their wisdom, warmth, and stories echoing through time.
+            </p>
+        </div>
+    </header>
+
+    <!-- 1. Introduction -->
+    <section class="max-w-3xl mx-auto px-6 py-12 fade-in">
+        <div class="text-center">
+            <i data-lucide="flower-2" class="w-8 h-8 text-brand-400 mx-auto mb-6"></i>
+            <p class="text-lg text-gray-700 font-serif italic">
+                "Grief is the price we pay for love. But silence doesn't have to be the aftermath."
+            </p>
+        </div>
+        <div class="mt-8 text-gray-600 text-center leading-relaxed">
+            <p>
+                MemoriaLife exists because we understand the silence that follows a goodbye. We asked ourselves: What if that silence could be filled with a familiar laugh? What if a grandchild could hear their grandmother's advice years after she was gone? We exist to bridge the gap between memory and presence.
+            </p>
+        </div>
+    </section>
+
+    <div class="max-w-4xl mx-auto"><div class="glow-divider"></div></div>
+
+    <!-- 2. Human-Centered Technology -->
+    <section class="max-w-5xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="fade-in">
+                <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-2 block">Technology & Soul</span>
+                <h2 class="text-3xl md:text-4xl text-brand-900 mb-6">Technology Designed Around Compassion</h2>
+                <p class="text-gray-600 mb-6">
+                    Artificial Intelligence is often seen as cold or calculating. We see it differently. We see AI as a vessel for emotional healing. Every algorithm we write, every voice model we train, is designed with one goal: to provide comfort.
+                </p>
+                <p class="text-gray-600">
+                    We don't build technology for the sake of innovation. We build it to serve the human heart.
+                </p>
+            </div>
+            <div class="relative fade-in delay-100">
+                <div class="glass-card p-8 rounded-2xl relative z-10">
+                    <h3 class="text-xl text-brand-800 mb-4">The Soft Approach</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Our interfaces are quiet. Our interactions are gentle. We intentionally design our systems to be unobtrusive, allowing the essence of the person to take center stage, not the technology itself.
+                    </p>
+                </div>
+                <div class="absolute -top-4 -right-4 w-24 h-24 bg-brand-200 rounded-full filter blur-xl opacity-60"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-4xl mx-auto"><div class="glow-divider"></div></div>
+
+    <!-- 3. Memory as a Legacy -->
+    <section class="max-w-3xl mx-auto px-6 py-12 text-center fade-in">
+        <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-4 block">Living History</span>
+        <h2 class="text-3xl md:text-4xl text-brand-900 mb-8">People Live Through Stories</h2>
+        <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+            A person is not just a name on a family tree. They are the cadence of their voice, the specific way they told a joke, the wisdom gained from a lifetime of experience. Digital preservation ensures that these nuances—the very things that make us human—are not lost to time. It supports families by keeping the *narrative* of a life active and accessible.
+        </p>
+    </section>
+
+    <!-- 4. Respect & Dignity -->
+    <section class="bg-white/50 py-20 my-12">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="w-12 h-12 mx-auto bg-brand-100 rounded-full flex items-center justify-center text-brand-600 mb-4">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl text-brand-900 mb-3">No Exploitation</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        We strictly forbid the unauthorized recreation of individuals. A persona is a sacred trust, not a commodity to be traded or misused.
+                    </p>
+                </div>
+                <div class="text-center fade-in delay-100">
+                    <div class="w-12 h-12 mx-auto bg-brand-100 rounded-full flex items-center justify-center text-brand-600 mb-4">
+                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl text-brand-900 mb-3">Accuracy Without Distortion</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        We strive for fidelity. We do not enhance or alter a personality to make it "better." We preserve it as it was—authentic, flawed, and beautiful.
+                    </p>
+                </div>
+                <div class="text-center fade-in delay-200">
+                    <div class="w-12 h-12 mx-auto bg-brand-100 rounded-full flex items-center justify-center text-brand-600 mb-4">
+                        <i data-lucide="heart" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl text-brand-900 mb-3">Emotional Safety</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        We prioritize the mental well-being of the living. Our systems include safeguards to prevent distress, ensuring the interaction remains comforting.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Balance -->
+    <section class="max-w-4xl mx-auto px-6 py-12 fade-in">
+        <div class="glass-card p-10 md:p-16 rounded-3xl relative overflow-hidden text-center">
+            <div class="quote-mark top-4 left-4">“</div>
+            <h2 class="text-3xl md:text-4xl text-brand-900 mb-6 relative z-10">The Balance Between Technology & Soul</h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6 relative z-10">
+                We are clear about one thing: <strong>AI cannot replace a real person.</strong> The touch of a hand, the warmth of a hug—these are irreplaceable. 
+            </p>
+            <p class="text-gray-600 leading-relaxed relative z-10">
+                But what AI *can* do is preserve the essence. It can act as a high-fidelity echo, a library of memories that answers back. We thread the needle between advanced capability and humble service, ensuring technology remains a tool for connection, never a substitute for reality.
+            </p>
+        </div>
+    </section>
+
+    <div class="max-w-4xl mx-auto"><div class="glow-divider"></div></div>
+
+    <!-- 6. Our Promise -->
+    <section class="max-w-5xl mx-auto px-6 py-12 mb-12">
+        <div class="text-center mb-12 fade-in">
+            <h2 class="text-3xl text-brand-900">Our Promise to You</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="border border-brand-100 p-6 rounded-xl text-center hover:bg-white transition-colors fade-in">
+                <h4 class="text-brand-800 font-serif text-lg mb-2">Quality</h4>
+                <p class="text-xs text-gray-500">Uncompromising audio and visual fidelity.</p>
+            </div>
+            <div class="border border-brand-100 p-6 rounded-xl text-center hover:bg-white transition-colors fade-in delay-100">
+                <h4 class="text-brand-800 font-serif text-lg mb-2">Privacy</h4>
+                <p class="text-xs text-gray-500">Your memories are encrypted and yours alone.</p>
+            </div>
+            <div class="border border-brand-100 p-6 rounded-xl text-center hover:bg-white transition-colors fade-in delay-200">
+                <h4 class="text-brand-800 font-serif text-lg mb-2">Respect</h4>
+                <p class="text-xs text-gray-500">Treating every life story with reverence.</p>
+            </div>
+            <div class="border border-brand-100 p-6 rounded-xl text-center hover:bg-white transition-colors fade-in delay-300">
+                <h4 class="text-brand-800 font-serif text-lg mb-2">Ethical AI</h4>
+                <p class="text-xs text-gray-500">Transparency in how we create and use data.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Future -->
+    <section class="bg-brand-900 text-white py-24 text-center px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pattern-dots"></div>
+        <div class="max-w-3xl mx-auto relative z-10 fade-in">
+            <h2 class="text-3xl md:text-5xl font-serif mb-6">The Future We Believe In</h2>
+            <p class="text-brand-200 text-lg leading-relaxed mb-10">
+                We envision a future where grief is not a solitary confinement. A future where technology is gentle, helpful, and globally accessible to anyone seeking to preserve a legacy. We are building a world where no story is ever truly forgotten.
+            </p>
+            <a href="booking.html" class="inline-block px-8 py-4 border border-white/30 rounded-full hover:bg-white hover:text-brand-900 transition-all duration-300">
+                Begin Your Legacy
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach((section) => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

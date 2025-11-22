@@ -1,0 +1,366 @@
+
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | MemoriaLife</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f6',
+                            100: '#e3e9e7',
+                            200: '#c5d3cf',
+                            300: '#9db5af',
+                            400: '#74938d',
+                            500: '#567671',
+                            600: '#425d59',
+                            800: '#364845',
+                            900: '#2f3c3a',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    backgroundImage: {
+                        'soft-gradient': 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #fbfaf9;
+            color: #2f3c3a;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        .glass-nav {
+            background: rgba(251, 250, 249, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e3e9e7;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #74938d;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(116, 147, 141, 0.1);
+        }
+
+        /* Map Grayscale Filter for Aesthetic */
+        .map-frame iframe {
+            filter: grayscale(100%) contrast(90%);
+            transition: filter 0.3s ease;
+        }
+        .map-frame:hover iframe {
+            filter: grayscale(0%) contrast(100%);
+        }
+
+        /* Dropdown Menu Logic */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <i data-lucide="infinity" class="h-6 w-6 text-brand-600 group-hover:rotate-180 transition-transform duration-700"></i>
+                    <span class="font-serif text-2xl font-medium tracking-tight text-brand-900">MemoriaLife</span>
+                </a>
+
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">Home</a>
+                    
+                    <div class="relative dropdown py-4">
+                        <a href="services.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide flex items-center gap-1">
+                            Services <i data-lucide="chevron-down" class="w-3 h-3"></i>
+                        </a>
+                        <div class="absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-xl border border-gray-100 dropdown-menu z-50">
+                            <a href="services.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600 rounded-t-lg">All Plans</a>
+                            <a href="real-presence.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-600">Real Presence</a>
+                        </div>
+                    </div>
+
+                    <a href="how-it-works.html" class="text-brand-800 hover:text-brand-500 transition-colors text-sm tracking-wide">How It Works</a>
+                    <a href="booking.html" class="bg-brand-600 text-white px-6 py-2.5 rounded-full text-sm hover:bg-brand-800 transition-all shadow-md hover:shadow-lg">
+                        Book Consultation
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-800">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full h-screen">
+            <div class="px-4 pt-4 pb-8 space-y-4 shadow-lg">
+                <a href="services.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">Services</a>
+                <a href="how-it-works.html" class="block text-brand-800 hover:text-brand-500 font-medium border-b border-gray-50 pb-2">How It Works</a>
+                <a href="booking.html" class="block text-center bg-brand-600 text-white px-4 py-3 rounded-lg mt-4">Book Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="min-h-screen pt-32 pb-24 bg-soft-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Header -->
+            <div class="text-center mb-16 fade-in">
+                <h1 class="text-3xl md:text-5xl font-serif text-brand-900 mb-4">Get in Touch</h1>
+                <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Whether you have questions about our technology, need support with a preservation plan, or simply want to visit our studio, we are here to listen.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 fade-in" style="animation-delay: 0.2s">
+                
+                <!-- Left Column: Info & Map -->
+                <div class="space-y-8">
+                    <!-- Info Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="glass-card p-6 rounded-xl hover:bg-white transition-colors">
+                            <div class="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center mb-4 text-brand-600">
+                                <i data-lucide="mail" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-serif text-lg text-brand-900 mb-1">Email Us</h3>
+                            <p class="text-sm text-gray-500 mb-2">For general inquiries</p>
+                            <a href="mailto:care@memorialife.in" class="text-brand-600 font-medium hover:underline">care@memorialife.in</a>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-xl hover:bg-white transition-colors">
+                            <div class="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center mb-4 text-brand-600">
+                                <i data-lucide="phone" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-serif text-lg text-brand-900 mb-1">Call Us</h3>
+                            <p class="text-sm text-gray-500 mb-2">Mon-Sat, 9am - 6pm</p>
+                            <a href="tel:+919876543210" class="text-brand-600 font-medium hover:underline">+91 98765 43210</a>
+                        </div>
+                    </div>
+
+                    <!-- Location Card -->
+                    <div class="glass-card p-6 rounded-xl hover:bg-white transition-colors">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-brand-50 rounded-full flex items-center justify-center shrink-0 text-brand-600">
+                                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-lg text-brand-900 mb-2">Visit Our Studio</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed">
+                                    124, Cyber City, DLF Phase 2<br>
+                                    Gurugram, Haryana 122002<br>
+                                    India
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Embed -->
+                    <div class="map-frame rounded-xl overflow-hidden h-64 shadow-sm border border-white">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.2233913121413!2d77.08783865146167!3d28.492360982381827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d193a02e890b7%3A0xfc18047618cc31c5!2sCyber%20City%2C%20DLF%20Phase%202%2C%20Sector%2024%2C%20Gurugram%2C%20Haryana%20122002!5e0!3m2!1sen!2sin!4v1698154234567!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Right Column: Contact Form -->
+                <div class="relative">
+                    <div class="glass-card p-8 md:p-10 rounded-2xl relative z-10">
+                        <h2 class="font-serif text-2xl text-brand-900 mb-6">Send a Message</h2>
+                        
+                        <form id="contact-form" class="space-y-6">
+                            <!-- FormSubmit Configuration -->
+                            <input type="hidden" name="_subject" value="New Inquiry - MemoriaLife Contact">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
+                                <input type="text" name="name" required class="form-input" placeholder="John Doe">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <input type="email" name="email" required class="form-input" placeholder="john@example.com">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                                <select name="inquiry_type" class="form-input">
+                                    <option>General Inquiry</option>
+                                    <option>Pricing & Plans</option>
+                                    <option>Technical Support</option>
+                                    <option>Partnership</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                <textarea name="message" rows="5" required class="form-input" placeholder="How can we help you today?"></textarea>
+                            </div>
+
+                            <button type="submit" id="submit-btn" class="w-full bg-brand-900 text-white py-4 rounded-lg font-medium hover:bg-black transition-all flex items-center justify-center gap-2 group">
+                                <span>Send Message</span>
+                                <i data-lucide="send" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </form>
+
+                        <!-- Success Message (Hidden by default) -->
+                        <div id="success-msg" class="hidden absolute inset-0 bg-white/95 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center text-center p-8 z-20">
+                            <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="check" class="w-8 h-8 text-green-500"></i>
+                            </div>
+                            <h3 class="font-serif text-2xl text-brand-900 mb-2">Message Sent</h3>
+                            <p class="text-gray-600">Thank you for contacting us. We will respond to your inquiry within 24 hours.</p>
+                            <button onclick="resetForm()" class="mt-6 text-brand-600 font-medium hover:underline">Send another message</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Blob behind form -->
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-brand-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -z-10"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-900 text-brand-100 py-12 border-t border-brand-800">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-serif text-xl text-white">MemoriaLife</span>
+                <p class="text-xs text-brand-400 mt-1">Preserving Presence.</p>
+            </div>
+            <div class="flex space-x-6 text-sm">
+                <a href="index.html" class="hover:text-white">Home</a>
+                <a href="services.html" class="hover:text-white">Services</a>
+                <a href="contact.html" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Mobile Menu
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Form Handling with FormSubmit AJAX
+        const form = document.getElementById('contact-form');
+        const successMsg = document.getElementById('success-msg');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = submitBtn.querySelector('span');
+        const btnIcon = submitBtn.querySelector('i');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Loading State
+            submitBtn.disabled = true;
+            btnText.innerText = "Sending...";
+            btnIcon.classList.add('hidden');
+            submitBtn.classList.add('opacity-75');
+
+            const formData = new FormData(form);
+
+            fetch('https://formsubmit.co/ajax/support@gamingodyssey.in', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Success State
+                successMsg.classList.remove('hidden');
+                successMsg.classList.add('flex'); // Ensure flex layout is applied
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again or email us directly.');
+                
+                // Reset Button
+                submitBtn.disabled = false;
+                btnText.innerText = "Send Message";
+                btnIcon.classList.remove('hidden');
+                submitBtn.classList.remove('opacity-75');
+            });
+        });
+
+        function resetForm() {
+            successMsg.classList.add('hidden');
+            successMsg.classList.remove('flex');
+            submitBtn.disabled = false;
+            btnText.innerText = "Send Message";
+            btnIcon.classList.remove('hidden');
+            submitBtn.classList.remove('opacity-75');
+        }
+    </script>
+</body>
+</html>

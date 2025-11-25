@@ -248,7 +248,7 @@
                 <div class="flex items-start gap-3 max-w-[80%]">
                     <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-5 h-5 text-brand-600"></i></div>
                     <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700">
-                        Namaste. I am the preserved digital memory. I can tell you stories about our family or my life. What would you like to know?
+                        Namaste. I am ready to speak with you as you have designed me.
                     </div>
                 </div>
             </div>
@@ -260,7 +260,7 @@
                         <i data-lucide="send" class="w-5 h-5"></i>
                     </button>
                 </div>
-                <p class="text-[10px] text-gray-400 mt-2 text-center">Powered by MemoriaLife-gen V1</p>
+                <p class="text-[10px] text-gray-400 mt-2 text-center">Powered by Local Ollama Model</p>
             </div>
         </div>
     </section>
@@ -435,6 +435,7 @@
 
         // --- WEBSOCKET LOGIC ---
         function connectWebSocket() {
+            // EDIT THIS URL to your specific ngrok/localhost URL
             const url = "wss://venice-postpupillary-coaxially.ngrok-free.dev/ws";
             console.log("Connecting to WebSocket:", url);
             
@@ -483,9 +484,10 @@
             return new Promise((resolve, reject) => {
                 pendingResolver = resolve;
                 
-                // Use current custom prompt
+                // SENDING SEPARATE FIELDS FOR BACKEND PROCESSING
                 const payload = {
-                    prompt: currentSystemPrompt + "\nUser says: " + userText,
+                    prompt: userText,
+                    system: currentSystemPrompt, // Separate system prompt
                     model: "memoria-v1" 
                 };
                 
@@ -679,6 +681,7 @@
                     function (error) {
                         console.error("Error loading model:", error);
                         if (!isFallback) {
+                            console.log("Loading fallback model...");
                             loadModel('https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb', true);
                         } else {
                             document.getElementById('loader').innerText = "Error loading avatar.";

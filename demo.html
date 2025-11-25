@@ -109,20 +109,53 @@
 </head>
 <body class="antialiased">
 
-    <!-- API Key Modal -->
-    <div id="api-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden flex items-center justify-center px-4">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-serif text-xl text-brand-900">Configuration</h3>
-                <button onclick="toggleApiModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <!-- Persona Customization Modal -->
+    <div id="persona-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] hidden flex items-center justify-center px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif text-2xl text-brand-900">Design Your Persona</h3>
+                <button onclick="togglePersonaModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
-            <p class="text-sm text-gray-600 mb-4">
-                Please enter your <strong>Gemini API Key</strong>. 
-                <br><span class="text-xs text-brand-600 bg-brand-50 px-2 py-1 rounded mt-2 inline-block">Key is stored locally in browser memory only.</span>
-            </p>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Gemini API Key</label>
-            <input type="password" id="user-api-key" placeholder="AIzaSy..." class="w-full p-3 border border-gray-200 rounded-lg mb-6 focus:ring-2 focus:ring-brand-500 outline-none">
-            <button onclick="saveApiKey()" class="w-full bg-brand-800 text-white py-3 rounded-lg font-medium hover:bg-brand-900 transition-colors">Save Settings</button>
+            
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Name</label>
+                        <input type="text" id="p-name" value="Nana" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Age</label>
+                        <input type="text" id="p-age" value="75" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Role / Relationship</label>
+                    <input type="text" id="p-role" value="Wise Grandfather" placeholder="e.g. Mother, Old Friend" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Personality Traits</label>
+                    <textarea id="p-traits" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" placeholder="e.g. Kind, patient, loves telling stories...">Kind, patient, nostalgic about India, loves poetry.</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Speaking Style</label>
+                    <textarea id="p-style" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" placeholder="e.g. Slow, warm, uses pauses...">Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English.</textarea>
+                </div>
+                
+                <div class="bg-brand-50 p-4 rounded-lg border border-brand-100 mt-4">
+                    <p class="text-xs text-gray-500 mb-1 uppercase tracking-wider font-bold">System Prompt Preview</p>
+                    <p id="prompt-preview" class="text-xs text-brand-800 italic leading-relaxed">You are Nana, a 75-year-old Wise Grandfather. Your personality is Kind, patient, nostalgic about India, loves poetry. You speak in a Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English manner.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 flex gap-3">
+                <button onclick="resetPersona()" class="px-4 py-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 font-medium text-sm">Reset</button>
+                <button onclick="savePersona()" class="flex-1 bg-brand-800 text-white py-3 rounded-lg font-medium hover:bg-brand-900 transition-colors shadow-lg text-sm flex justify-center items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4"></i> Apply Persona
+                </button>
+            </div>
         </div>
     </div>
 
@@ -135,13 +168,21 @@
                     <span class="font-serif text-2xl font-medium text-brand-900">MemoriaLife</span>
                 </a>
                 
-                <div class="hidden md:flex space-x-6 items-center">
+                <div class="hidden md:flex space-x-4 items-center">
                     <button onclick="scrollToSection('plans-section')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Plans</button>
                     <button onclick="scrollToSection('chatbot-demo')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Chat</button>
                     <button onclick="scrollToSection('voice-demo')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Voice</button>
                     <button onclick="scrollToSection('3d-demo')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">3D Avatar</button>
-                    <button onclick="toggleApiModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-100 text-brand-800 rounded-full text-sm hover:bg-brand-200 transition-colors">
-                        <i data-lucide="settings" class="w-4 h-4"></i> API Settings
+                    
+                    <!-- Status Indicator -->
+                    <div id="connection-status" class="flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-medium border border-gray-200 transition-colors mr-2">
+                        <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+                        Connecting...
+                    </div>
+
+                    <!-- Customize Button -->
+                    <button onclick="togglePersonaModal()" class="flex items-center gap-2 px-4 py-2 bg-white text-brand-800 border border-brand-200 rounded-full text-xs font-medium hover:bg-brand-50 transition-colors shadow-sm">
+                        <i data-lucide="user-cog" class="w-3 h-3"></i> Customize Persona
                     </button>
                 </div>
             </div>
@@ -154,7 +195,7 @@
             <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-4 block">Live Experience</span>
             <h1 class="text-4xl md:text-5xl font-serif text-brand-900 mb-6">Experience the Technology</h1>
             <p class="text-gray-600 font-light text-lg">
-                Interact with our core technologies. Powered by Google Gemini for intelligence and advanced WebGL for presence.
+                Interact with our core technologies. Powered by your local Neural Network.
             </p>
         </div>
     </header>
@@ -200,14 +241,14 @@
                 <div class="w-3 h-3 rounded-full bg-red-400"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                 <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                <span class="text-white text-sm font-medium ml-2">MemoriaLife AI - Text Core</span>
+                <span class="text-white text-sm font-medium ml-2">MemoriaLife AI - Local Core</span>
             </div>
             
             <div id="chat-history" class="h-96 overflow-y-auto p-6 bg-white/50 space-y-4 flex flex-col">
                 <div class="flex items-start gap-3 max-w-[80%]">
                     <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-5 h-5 text-brand-600"></i></div>
                     <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-gray-700">
-                        Namaste. I am the preserved digital memory of Nana. I can tell you stories about our family or my time in the 80s. What would you like to know?
+                        Namaste. I am the preserved digital memory. I can tell you stories about our family or my life. What would you like to know?
                     </div>
                 </div>
             </div>
@@ -219,7 +260,7 @@
                         <i data-lucide="send" class="w-5 h-5"></i>
                     </button>
                 </div>
-                <p class="text-[10px] text-gray-400 mt-2 text-center">Powered by Google Gemini 1.5 Flash</p>
+                <p class="text-[10px] text-gray-400 mt-2 text-center">Powered by MemoriaLife-gen V1</p>
             </div>
         </div>
     </section>
@@ -238,7 +279,7 @@
                 </div>
                 
                 <div class="flex gap-3">
-                    <input type="text" id="voice-input" placeholder="Ask Nana something..." class="flex-1 bg-white border border-gray-200 rounded-xl p-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" onkeypress="handleEnter(event, 'voice')">
+                    <input type="text" id="voice-input" placeholder="Ask something..." class="flex-1 bg-white border border-gray-200 rounded-xl p-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" onkeypress="handleEnter(event, 'voice')">
                     <button onclick="sendVoiceMessage()" id="speak-btn" class="bg-brand-800 text-white px-6 py-3 rounded-xl hover:bg-brand-900 transition-all shadow-lg flex items-center justify-center gap-2">
                         <i data-lucide="mic" class="w-4 h-4"></i> 
                         <span>Talk</span>
@@ -294,33 +335,74 @@
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
         // --- Global State ---
-        let apiKey = ""; 
+        let ws = null;
+        let wsConnected = false;
+        let pendingResolver = null; 
+        
         let avatarMesh = null;
         let isSpeaking = false;
         let clock = new THREE.Clock();
 
-        const SYSTEM_PROMPT = "You are Nana, a wise and kind grandfather from India. You speak in the tone of a gentle, elderly man—slow, warm, and comforting. Use 'hmm', 'ah', or pauses (...) to sound natural. Use simple, affectionate English. Keep responses concise (under 2 sentences) so you can speak them easily.";
+        // Default Persona
+        const DEFAULT_PERSONA = {
+            name: "Nana",
+            age: "75",
+            role: "Wise Grandfather",
+            traits: "Kind, patient, nostalgic about India, loves poetry.",
+            style: "Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English."
+        };
+
+        // Current Prompt
+        let currentSystemPrompt = "";
 
         // --- UI Helpers ---
-        window.toggleApiModal = () => {
-            document.getElementById('api-modal').classList.toggle('hidden');
+        window.togglePersonaModal = () => {
+            const modal = document.getElementById('persona-modal');
+            modal.classList.toggle('hidden');
+            // Update preview on open
+            if(!modal.classList.contains('hidden')) updatePreview();
         }
 
-        window.saveApiKey = () => {
-            const input = document.getElementById('user-api-key');
-            const val = input.value.trim();
+        window.updatePreview = () => {
+            const name = document.getElementById('p-name').value || DEFAULT_PERSONA.name;
+            const age = document.getElementById('p-age').value || DEFAULT_PERSONA.age;
+            const role = document.getElementById('p-role').value || DEFAULT_PERSONA.role;
+            const traits = document.getElementById('p-traits').value || DEFAULT_PERSONA.traits;
+            const style = document.getElementById('p-style').value || DEFAULT_PERSONA.style;
+
+            const prompt = `You are ${name}, a ${age}-year-old ${role}. Your personality is ${traits}. You speak in a ${style} manner. Keep responses concise (under 2 sentences).`;
+            document.getElementById('prompt-preview').innerText = prompt;
+        }
+
+        // Listen for input changes
+        ['p-name', 'p-age', 'p-role', 'p-traits', 'p-style'].forEach(id => {
+            document.getElementById(id).addEventListener('input', window.updatePreview);
+        });
+
+        window.savePersona = () => {
+            const name = document.getElementById('p-name').value || DEFAULT_PERSONA.name;
+            const age = document.getElementById('p-age').value || DEFAULT_PERSONA.age;
+            const role = document.getElementById('p-role').value || DEFAULT_PERSONA.role;
+            const traits = document.getElementById('p-traits').value || DEFAULT_PERSONA.traits;
+            const style = document.getElementById('p-style').value || DEFAULT_PERSONA.style;
+
+            currentSystemPrompt = `You are ${name}, a ${age}-year-old ${role}. Your personality is ${traits}. You speak in a ${style} manner. Keep responses concise (under 2 sentences) so you can speak them easily.`;
             
-            if(val.length > 10) {
-                if(val.startsWith('sk-')) {
-                    alert("That looks like an OpenAI key. Please use a Google Gemini API Key (starts with AIza...).");
-                    return;
-                }
-                apiKey = val;
-                toggleApiModal();
-                alert("Gemini API Key Saved!");
-            } else {
-                alert("Please enter a valid Key.");
-            }
+            togglePersonaModal();
+            
+            // Add system message to chat history to indicate change
+            const history = document.getElementById('chat-history');
+            history.innerHTML += `<div class="w-full text-center text-xs text-gray-400 my-2 italic">Persona updated to: ${name}</div>`;
+            history.scrollTop = history.scrollHeight;
+        }
+
+        window.resetPersona = () => {
+            document.getElementById('p-name').value = DEFAULT_PERSONA.name;
+            document.getElementById('p-age').value = DEFAULT_PERSONA.age;
+            document.getElementById('p-role').value = DEFAULT_PERSONA.role;
+            document.getElementById('p-traits').value = DEFAULT_PERSONA.traits;
+            document.getElementById('p-style').value = DEFAULT_PERSONA.style;
+            window.updatePreview();
         }
 
         window.scrollToSection = (id) => {
@@ -334,75 +416,106 @@
                 if(type === 'avatar') window.sendAvatarMessage();
             }
         }
-        // Add listener for avatar input specifically
         document.getElementById('avatar-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') window.sendAvatarMessage();
         });
 
-        // --- GEMINI API HELPER ---
-        async function callGemini(userText) {
-            if (!apiKey) { alert("Please set your Gemini API Key first via 'API Settings'!"); toggleApiModal(); return null; }
-            
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{
-                    parts: [
-                        { text: SYSTEM_PROMPT + "\nUser says: " + userText }
-                    ]
-                }]
-            };
+        function updateStatus(status) {
+            const el = document.getElementById('connection-status');
+            if (status === 'online') {
+                el.className = "flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200 mr-2";
+                el.innerHTML = `<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> AI System Online`;
+                wsConnected = true;
+            } else {
+                el.className = "flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-medium border border-red-200 mr-2";
+                el.innerHTML = `<div class="w-2 h-2 rounded-full bg-red-500"></div> Offline`;
+                wsConnected = false;
+            }
+        }
 
+        // --- WEBSOCKET LOGIC ---
+        function connectWebSocket() {
+            const url = "wss://venice-postpupillary-coaxially.ngrok-free.dev/ws";
+            console.log("Connecting to WebSocket:", url);
+            
             try {
-                console.log("Sending request to Gemini...");
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const data = await response.json();
-                console.log("Gemini Response:", data);
+                ws = new WebSocket(url);
 
-                if (data.error) {
-                    console.error("API Error:", data.error);
-                    alert("Gemini API Error: " + data.error.message);
-                    throw new Error(data.error.message);
-                }
-                
-                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                    throw new Error("Unexpected API response format. Check Console.");
-                }
+                ws.onopen = () => {
+                    console.log("Connected to AI Server");
+                    updateStatus('online');
+                };
 
-                return data.candidates[0].content.parts[0].text;
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                // Don't alert again if we already alerted the specific API error
-                if (!error.message.includes("Gemini API Error")) {
-                    alert("Connection failed. Check your internet or API Key.");
-                }
+                ws.onmessage = (event) => {
+                    let responseText = event.data;
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.response) responseText = data.response;
+                        else if (data.message) responseText = data.message;
+                        else if (data.content) responseText = data.content;
+                    } catch (e) {}
+
+                    if (pendingResolver) {
+                        pendingResolver(responseText);
+                        pendingResolver = null;
+                    }
+                };
+
+                ws.onclose = () => {
+                    updateStatus('offline');
+                    setTimeout(connectWebSocket, 5000);
+                };
+
+                ws.onerror = (error) => {
+                    updateStatus('offline');
+                };
+            } catch (e) {
+                updateStatus('offline');
+            }
+        }
+
+        async function callOllama(userText) {
+            if (!ws || !wsConnected) {
+                alert("System is offline. Please check your server connection.");
                 return null;
             }
+
+            return new Promise((resolve, reject) => {
+                pendingResolver = resolve;
+                
+                // Use current custom prompt
+                const payload = {
+                    prompt: currentSystemPrompt + "\nUser says: " + userText,
+                    model: "memoria-v1" 
+                };
+                
+                ws.send(JSON.stringify(payload));
+                
+                setTimeout(() => {
+                    if (pendingResolver) {
+                        console.warn("Timeout waiting for AI response");
+                        // resolve(null); 
+                    }
+                }, 10000);
+            });
         }
 
         // --- SPEECH SYNTHESIS HELPER ---
         function speakText(text, onStart, onEnd) {
-            window.speechSynthesis.cancel(); // Stop previous
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             
-            // Tuning for "Gentle, Elderly Man"
-            utterance.rate = 0.75; // Slow, thoughtful pace
-            utterance.pitch = 0.85; // Slightly deeper, warmer resonance
+            // Tuning
+            utterance.rate = 0.8; 
+            utterance.pitch = 0.9; 
             utterance.volume = 1.0;
             
-            // Voice Selection Strategy
             const voices = window.speechSynthesis.getVoices();
-            
-            // Try to find specific voices known to sound warmer/male
+            // Logic to pick voice based on persona? 
+            // For now, sticking to a neutral male/female depending on browser
             const maleVoice = voices.find(v => 
-                v.name.includes("Google UK English Male") || // Often best for 'wise' tone
+                v.name.includes("Google UK English Male") || 
                 v.name.includes("Microsoft David") ||
-                v.name.includes("Daniel") ||
                 v.name.toLowerCase().includes("male")
             );
             
@@ -421,11 +534,9 @@
             const msg = input.value.trim();
             if (!msg) return;
 
-            // UI Update (User)
             input.value = '';
             history.innerHTML += `<div class="flex items-start gap-3 max-w-[80%] self-end flex-row-reverse"><div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white shrink-0"><i data-lucide="user" class="w-4 h-4"></i></div><div class="bg-brand-600 text-white p-4 rounded-2xl rounded-tr-none text-sm">${msg}</div></div>`;
             
-            // Add Loading Bubble
             const loadingId = 'loading-' + Date.now();
             history.innerHTML += `
                 <div id="${loadingId}" class="flex items-start gap-3 max-w-[80%]">
@@ -438,10 +549,8 @@
             history.scrollTop = history.scrollHeight;
             lucide.createIcons();
 
-            // Gemini Call
-            const reply = await callGemini(msg);
+            const reply = await callOllama(msg);
             
-            // Remove Loader
             const loader = document.getElementById(loadingId);
             if(loader) loader.remove();
 
@@ -463,13 +572,11 @@
             display.innerText = "User: " + msg;
             input.value = "";
             
-            // Show visual feedback
             const originalText = display.innerHTML;
             display.innerHTML += `<br><span class="text-brand-500 text-xs animate-pulse">Thinking...</span>`;
 
-            const reply = await callGemini(msg);
+            const reply = await callOllama(msg);
             
-            // Remove "Thinking..." by resetting or replacing
             if (reply) {
                 display.innerHTML = `User: ${msg}<br><br><strong>AI:</strong> ${reply}`;
                 display.scrollTop = display.scrollHeight;
@@ -479,7 +586,7 @@
                     () => { visualizer.classList.add('opacity-30'); visualizer.classList.remove('playing'); }
                 );
             } else {
-                display.innerHTML = originalText + `<br><span class="text-red-500 text-xs">Error processing request.</span>`;
+                display.innerHTML = originalText + `<br><span class="text-red-500 text-xs">Connection Error.</span>`;
             }
         }
 
@@ -494,7 +601,7 @@
             input.placeholder = "Thinking...";
             input.disabled = true;
 
-            const reply = await callGemini(msg);
+            const reply = await callOllama(msg);
             
             input.placeholder = originalPlaceholder;
             input.disabled = false;
@@ -510,7 +617,6 @@
 
         function resetMouth() {
             if (avatarMesh && avatarMesh.morphTargetInfluences) {
-                // Reset jaw/mouth morphs
                 const mouthIdx = avatarMesh.morphTargetDictionary['mouthOpen'] || avatarMesh.morphTargetDictionary['jawOpen'];
                 if (mouthIdx !== undefined) avatarMesh.morphTargetInfluences[mouthIdx] = 0;
             }
@@ -518,17 +624,10 @@
 
         function updateLipSync() {
             if (!avatarMesh || !isSpeaking) return;
-            
-            // Simulate lip movement with sine wave
             const time = Date.now() * 0.02;
-            const value = (Math.sin(time) + 1) * 0.3 + 0.1; // Random-ish open value
-            
-            // Find appropriate morph target (ReadyPlayerMe usually has 'mouthOpen')
+            const value = (Math.sin(time) + 1) * 0.3 + 0.1; 
             const mouthIdx = avatarMesh.morphTargetDictionary['mouthOpen'] || avatarMesh.morphTargetDictionary['jawOpen'];
-            
-            if (mouthIdx !== undefined) {
-                avatarMesh.morphTargetInfluences[mouthIdx] = value;
-            }
+            if (mouthIdx !== undefined) avatarMesh.morphTargetInfluences[mouthIdx] = value;
         }
 
         function initThreeJS() {
@@ -537,17 +636,16 @@
             const height = container.clientHeight;
 
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xe3e9e7); // Soft gray background
+            scene.background = new THREE.Color(0xe3e9e7);
 
             const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-            camera.position.set(0, 1.6, 1.5); // Face level
+            camera.position.set(0, 1.6, 1.5); 
 
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
 
-            // Lighting
             const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
             scene.add(hemiLight);
             const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -560,34 +658,27 @@
             controls.target.set(0, 1.5, 0);
             controls.update();
 
-            // Load Ready Player Me Model (Human)
             const loader = new GLTFLoader();
             
-            // Function to load a fallback model if the main one fails
             const loadModel = (url, isFallback = false) => {
                 loader.load(url, 
                     function (gltf) {
                         document.getElementById('loader').style.display = 'none';
                         const model = gltf.scene;
-                        
                         model.traverse((o) => {
                             if (o.isMesh) {
                                 o.castShadow = true;
-                                // Capture the head mesh for morph targets
                                 if (o.morphTargetDictionary && (o.name.includes('Head') || o.name.includes('Wolf3D_Head'))) {
                                     avatarMesh = o;
                                 }
                             }
                         });
-
                         scene.add(model);
                     },
                     undefined,
                     function (error) {
                         console.error("Error loading model:", error);
                         if (!isFallback) {
-                            console.log("Attempting to load fallback model...");
-                            // Fallback to a known standard model from three.js examples
                             loadModel('https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb', true);
                         } else {
                             document.getElementById('loader').innerText = "Error loading avatar.";
@@ -596,17 +687,14 @@
                 );
             };
 
-            // Try loading the primary realistic human model
             loadModel('https://models.readyplayer.me/63ac69548d4557e5074d88da.glb');
 
-            // Blink Logic
             let eyeBlinkTimer = 0;
             function updateBlink(delta) {
                 if(!avatarMesh) return;
                 eyeBlinkTimer -= delta;
                 if (eyeBlinkTimer <= 0) {
-                    eyeBlinkTimer = Math.random() * 3 + 2; // Blink every 2-5 seconds
-                    // Simple blink simulation if morph exists
+                    eyeBlinkTimer = Math.random() * 3 + 2; 
                     const blinkLeft = avatarMesh.morphTargetDictionary['eyeBlinkLeft'];
                     const blinkRight = avatarMesh.morphTargetDictionary['eyeBlinkRight'];
                     if(blinkLeft !== undefined && blinkRight !== undefined) {
@@ -623,10 +711,8 @@
             function animate() {
                 requestAnimationFrame(animate);
                 const delta = clock.getDelta();
-                
                 updateLipSync();
                 updateBlink(delta);
-                
                 renderer.render(scene, camera);
             }
             animate();
@@ -642,17 +728,12 @@
 
         window.onload = () => {
             lucide.createIcons();
+            // Initialize prompt with defaults
+            resetPersona();
+            
             initThreeJS();
-            
-            // Pre-load voices
             window.speechSynthesis.getVoices();
-            
-            if(!apiKey) {
-                setTimeout(() => {
-                    const btn = document.querySelector('button[onclick="toggleApiModal()"]');
-                    btn.classList.add('animate-pulse');
-                }, 2000);
-            }
+            connectWebSocket();
         };
     </script>
 </body>

@@ -343,6 +343,9 @@
         let isSpeaking = false;
         let clock = new THREE.Clock();
 
+        // Conversation History Storage
+        let conversationHistory = [];
+
         // Default Persona
         const DEFAULT_PERSONA = {
             name: "Nana",
@@ -388,11 +391,14 @@
 
             currentSystemPrompt = `You are ${name}, a ${age}-year-old ${role}. Your personality is ${traits}. You speak in a ${style} manner. Keep responses concise (under 2 sentences) so you can speak them easily.`;
             
+            // Clear Memory on Persona Change
+            conversationHistory = [];
+            
             togglePersonaModal();
             
             // Add system message to chat history to indicate change
             const history = document.getElementById('chat-history');
-            history.innerHTML += `<div class="w-full text-center text-xs text-gray-400 my-2 italic">Persona updated to: ${name}</div>`;
+            history.innerHTML += `<div class="w-full text-center text-xs text-gray-400 my-2 italic">Persona updated to: ${name}. Memory reset.</div>`;
             history.scrollTop = history.scrollHeight;
         }
 
@@ -402,6 +408,10 @@
             document.getElementById('p-role').value = DEFAULT_PERSONA.role;
             document.getElementById('p-traits').value = DEFAULT_PERSONA.traits;
             document.getElementById('p-style').value = DEFAULT_PERSONA.style;
+            
+            // Clear Memory
+            conversationHistory = [];
+            
             window.updatePreview();
         }
 
@@ -435,7 +445,7 @@
 
         // --- WEBSOCKET LOGIC ---
         function connectWebSocket() {
-            // EDIT THIS URL to your specific ngrok/localhost URL
+            // WebSocket URL
             const url = "wss://venice-postpupillary-coaxially.ngrok-free.dev/ws";
             console.log("Connecting to WebSocket:", url);
             
@@ -484,10 +494,16 @@
             return new Promise((resolve, reject) => {
                 pendingResolver = resolve;
                 
-                // SENDING SEPARATE FIELDS FOR BACKEND PROCESSING
+                // 1. Add User message to history
+                conversationHistory.push(`User: ${userText}`);
+                
+                // 2. Construct full prompt from history
+                // We join the history array with newlines to create a script-like context
+                const fullPrompt = conversationHistory.join("\n") + "\nAI:"; 
+                
                 const payload = {
-                    prompt: userText,
-                    system: currentSystemPrompt, // Separate system prompt
+                    prompt: fullPrompt, // Send the whole conversation so far
+                    system: currentSystemPrompt, 
                     model: "memoria-v1" 
                 };
                 
@@ -496,7 +512,6 @@
                 setTimeout(() => {
                     if (pendingResolver) {
                         console.warn("Timeout waiting for AI response");
-                        // resolve(null); 
                     }
                 }, 10000);
             });
@@ -513,8 +528,6 @@
             utterance.volume = 1.0;
             
             const voices = window.speechSynthesis.getVoices();
-            // Logic to pick voice based on persona? 
-            // For now, sticking to a neutral male/female depending on browser
             const maleVoice = voices.find(v => 
                 v.name.includes("Google UK English Male") || 
                 v.name.includes("Microsoft David") ||
@@ -553,6 +566,11 @@
 
             const reply = await callOllama(msg);
             
+            // 3. Add AI response to history
+            if (reply) {
+                conversationHistory.push(`AI: ${reply}`);
+            }
+            
             const loader = document.getElementById(loadingId);
             if(loader) loader.remove();
 
@@ -580,6 +598,10 @@
             const reply = await callOllama(msg);
             
             if (reply) {
+                // Add to history logic is handled in callOllama now for the prompt construction,
+                // but we also need to push the AI reply here if callOllama returned successfully
+                conversationHistory.push(`AI: ${reply}`);
+                
                 display.innerHTML = `User: ${msg}<br><br><strong>AI:</strong> ${reply}`;
                 display.scrollTop = display.scrollHeight;
                 
@@ -610,6 +632,7 @@
             input.focus();
 
             if (reply) {
+                conversationHistory.push(`AI: ${reply}`);
                 speakText(reply, 
                     () => { isSpeaking = true; }, 
                     () => { isSpeaking = false; resetMouth(); }

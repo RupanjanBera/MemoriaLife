@@ -445,8 +445,8 @@
 
         // --- WEBSOCKET LOGIC ---
         function connectWebSocket() {
-            // WebSocket URL
-            const url = "wss://venice-postpupillary-coaxially.ngrok-free.dev/ws";
+            // UPDATED WebSocket URL
+            const url = "wss://6471c2a5a854.ngrok-free.app"; 
             console.log("Connecting to WebSocket:", url);
             
             try {
@@ -498,11 +498,10 @@
                 conversationHistory.push(`User: ${userText}`);
                 
                 // 2. Construct full prompt from history
-                // We join the history array with newlines to create a script-like context
                 const fullPrompt = conversationHistory.join("\n") + "\nAI:"; 
                 
                 const payload = {
-                    prompt: fullPrompt, // Send the whole conversation so far
+                    prompt: fullPrompt, 
                     system: currentSystemPrompt, 
                     model: "memoria-v1" 
                 };

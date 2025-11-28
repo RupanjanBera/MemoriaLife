@@ -105,104 +105,56 @@
             gap: 10px;
             align-items: center;
         }
-
-        /* Voice Card Selection */
-        .voice-card {
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        .voice-card.selected {
-            border-color: #425d59;
-            background-color: #f4f7f6;
-        }
-
-        /* Mobile Menu */
-        #mobile-menu-btn { display: none; }
-        @media (max-width: 768px) {
-            #mobile-menu-btn { display: block; }
-            .desktop-menu { display: none; }
-        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Persona Customization Modal -->
     <div id="persona-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[70] hidden flex items-center justify-center px-4">
-        <div class="bg-white p-0 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            
-            <!-- Modal Header -->
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <div>
-                    <h3 class="font-serif text-2xl text-brand-900">Persona Studio</h3>
-                    <p class="text-xs text-gray-500">Design the personality and voice of your digital companion.</p>
-                </div>
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif text-2xl text-brand-900">Design Your Persona</h3>
                 <button onclick="togglePersonaModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             
-            <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
-                <!-- Sidebar Tabs -->
-                <div class="w-full md:w-1/3 bg-gray-50 border-r border-gray-100 p-6 overflow-y-auto">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Identity</h4>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Name</label>
-                            <input type="text" id="p-name" value="Nana" class="w-full p-2 bg-white border border-gray-200 rounded text-sm focus:ring-1 focus:ring-brand-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Age & Role</label>
-                            <input type="text" id="p-role" value="75-year-old Wise Grandfather" class="w-full p-2 bg-white border border-gray-200 rounded text-sm focus:ring-1 focus:ring-brand-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-600 mb-1">Traits</label>
-                            <textarea id="p-traits" rows="2" class="w-full p-2 bg-white border border-gray-200 rounded text-sm focus:ring-1 focus:ring-brand-500 outline-none">Kind, patient, nostalgic about India.</textarea>
-                        </div>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Name</label>
+                        <input type="text" id="p-name" value="Nana" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
                     </div>
-
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Voice Settings</h4>
-                    <div class="space-y-4">
-                        <div class="bg-white p-3 rounded border border-gray-200">
-                            <p class="text-xs text-gray-500 mb-1">Selected Voice</p>
-                            <p id="current-voice-name" class="text-sm font-medium text-brand-800">Clyde (Deep Male)</p>
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Age</label>
+                        <input type="text" id="p-age" value="75" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
                     </div>
                 </div>
 
-                <!-- Main Content (Voice Library) -->
-                <div class="w-full md:w-2/3 p-6 overflow-y-auto bg-white">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="font-serif text-lg text-brand-900">Neural Voice Library</h4>
-                        <div class="flex gap-2">
-                            <select id="voice-filter-gender" onchange="renderVoiceGrid()" class="text-xs p-1 border rounded bg-gray-50">
-                                <option value="all">All Genders</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                            <select id="voice-filter-age" onchange="renderVoiceGrid()" class="text-xs p-1 border rounded bg-gray-50">
-                                <option value="all">All Ages</option>
-                                <option value="old">Elderly</option>
-                                <option value="mid">Middle Aged</option>
-                                <option value="young">Young</option>
-                            </select>
-                        </div>
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Role / Relationship</label>
+                    <input type="text" id="p-role" value="Wise Grandfather" placeholder="e.g. Mother, Old Friend" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                </div>
 
-                    <!-- Voice Grid -->
-                    <div id="voice-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Populated by JS -->
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Personality Traits</label>
+                    <textarea id="p-traits" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" placeholder="e.g. Kind, patient, loves telling stories...">Kind, patient, nostalgic about India, loves poetry.</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Speaking Style</label>
+                    <textarea id="p-style" rows="2" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm" placeholder="e.g. Slow, warm, uses pauses...">Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English.</textarea>
+                </div>
+                
+                <div class="bg-brand-50 p-4 rounded-lg border border-brand-100 mt-4">
+                    <p class="text-xs text-gray-500 mb-1 uppercase tracking-wider font-bold">System Prompt Preview</p>
+                    <p id="prompt-preview" class="text-xs text-brand-800 italic leading-relaxed">You are Nana, a 75-year-old Wise Grandfather. Your personality is Kind, patient, nostalgic about India, loves poetry. You speak in a Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English manner.</p>
                 </div>
             </div>
 
-            <!-- Modal Footer -->
-            <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
-                <p id="prompt-preview" class="text-[10px] text-gray-500 w-1/2 truncate hidden sm:block">Preview: You are Nana...</p>
-                <div class="flex gap-3 w-full sm:w-auto justify-end">
-                    <button onclick="resetPersona()" class="px-4 py-2 text-gray-600 hover:text-brand-800 text-sm">Reset</button>
-                    <button onclick="savePersona()" class="px-6 py-2 bg-brand-800 text-white rounded-lg hover:bg-brand-900 shadow-md text-sm font-medium flex items-center gap-2">
-                        <i data-lucide="check" class="w-4 h-4"></i> Apply Persona
-                    </button>
-                </div>
+            <div class="mt-8 flex gap-3">
+                <button onclick="resetPersona()" class="px-4 py-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 font-medium text-sm">Reset</button>
+                <button onclick="savePersona()" class="flex-1 bg-brand-800 text-white py-3 rounded-lg font-medium hover:bg-brand-900 transition-colors shadow-lg text-sm flex justify-center items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4"></i> Apply Persona
+                </button>
             </div>
         </div>
     </div>
@@ -217,7 +169,7 @@
                 </a>
                 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-4 items-center desktop-menu">
+                <div class="hidden md:flex space-x-4 items-center">
                     <button onclick="scrollToSection('plans-section')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Plans</button>
                     <button onclick="scrollToSection('chatbot-demo')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Chat</button>
                     <button onclick="scrollToSection('voice-demo')" class="text-brand-800 hover:text-brand-500 text-sm font-medium">Voice</button>
@@ -236,28 +188,30 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="text-brand-800 hover:text-brand-600 p-2 rounded-md md:hidden" onclick="toggleMobileMenu()">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <div class="flex items-center md:hidden gap-2">
+                    <!-- Status Indicator Mobile -->
+                    <div id="connection-status-mobile" class="flex items-center gap-2 px-2 py-1 bg-gray-50 text-gray-500 rounded-full text-[10px] font-medium border border-gray-200 transition-colors">
+                        <div class="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                        Offline
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="text-brand-800 p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
-            <div class="px-4 pt-4 pb-6 space-y-4 flex flex-col">
-                <button onclick="scrollToSection('plans-section'); toggleMobileMenu()" class="text-left text-brand-800 font-medium py-2 border-b border-gray-100">Plans</button>
-                <button onclick="scrollToSection('chatbot-demo'); toggleMobileMenu()" class="text-left text-brand-800 font-medium py-2 border-b border-gray-100">Chat Demo</button>
-                <button onclick="scrollToSection('voice-demo'); toggleMobileMenu()" class="text-left text-brand-800 font-medium py-2 border-b border-gray-100">Voice Demo</button>
-                <button onclick="scrollToSection('3d-demo'); toggleMobileMenu()" class="text-left text-brand-800 font-medium py-2 border-b border-gray-100">3D Avatar</button>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xl transition-all duration-300 ease-in-out">
+            <div class="flex flex-col p-4 space-y-3">
+                <button onclick="scrollToSection('plans-section'); toggleMobileMenu()" class="text-left px-4 py-3 text-brand-800 hover:bg-brand-50 rounded-xl font-medium transition-colors">Plans</button>
+                <button onclick="scrollToSection('chatbot-demo'); toggleMobileMenu()" class="text-left px-4 py-3 text-brand-800 hover:bg-brand-50 rounded-xl font-medium transition-colors">Chat Demo</button>
+                <button onclick="scrollToSection('voice-demo'); toggleMobileMenu()" class="text-left px-4 py-3 text-brand-800 hover:bg-brand-50 rounded-xl font-medium transition-colors">Voice Demo</button>
+                <button onclick="scrollToSection('3d-demo'); toggleMobileMenu()" class="text-left px-4 py-3 text-brand-800 hover:bg-brand-50 rounded-xl font-medium transition-colors">3D Avatar</button>
                 
-                <!-- Mobile Status -->
-                 <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-xs font-medium text-gray-500 border border-gray-200">
-                    <div id="mobile-connection-status" class="w-2 h-2 rounded-full bg-gray-400"></div>
-                    <span id="mobile-connection-text">Connecting...</span>
-                </div>
-
-                <!-- Mobile Customize Button -->
-                <button onclick="togglePersonaModal(); toggleMobileMenu()" class="flex items-center justify-center gap-2 px-4 py-3 bg-brand-800 text-white rounded-lg text-sm font-medium hover:bg-brand-900 transition-colors shadow-sm w-full">
+                <div class="h-px bg-gray-100 my-2"></div>
+                
+                <button onclick="togglePersonaModal(); toggleMobileMenu()" class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-brand-800 text-white rounded-xl text-sm font-medium hover:bg-brand-900 transition-colors shadow-sm">
                     <i data-lucide="user-cog" class="w-4 h-4"></i> Customize Persona
                 </button>
             </div>
@@ -270,7 +224,7 @@
             <span class="text-brand-500 text-xs font-bold tracking-widest uppercase mb-4 block">Live Experience</span>
             <h1 class="text-4xl md:text-5xl font-serif text-brand-900 mb-6">Experience the Technology</h1>
             <p class="text-gray-600 font-light text-lg">
-                Interact with our core technologies.
+                Interact with our core technologies. Powered by your local Neural Network.
             </p>
         </div>
     </header>
@@ -316,7 +270,7 @@
                 <div class="w-3 h-3 rounded-full bg-red-400"></div>
                 <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                 <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                <span class="text-white text-sm font-medium ml-2">MemoriaLife AI - Text</span>
+                <span class="text-white text-sm font-medium ml-2">MemoriaLife AI - Local Core</span>
             </div>
             
             <div id="chat-history" class="h-96 overflow-y-auto p-6 bg-white/50 space-y-4 flex flex-col">
@@ -335,6 +289,7 @@
                         <i data-lucide="send" class="w-5 h-5"></i>
                     </button>
                 </div>
+                <p class="text-[10px] text-gray-400 mt-2 text-center">Powered by Memoria-ZV1</p>
             </div>
         </div>
     </section>
@@ -343,7 +298,7 @@
     <section id="voice-demo" class="max-w-4xl mx-auto px-4 py-20">
         <div class="text-center mb-10">
             <h2 class="text-3xl font-serif text-brand-900">Audio Conversation</h2>
-            <p class="text-gray-600 mt-2">Type below. The AI will think, and then speak using ElevenLabs Neural TTS.</p>
+            <p class="text-gray-600 mt-2">Type below. The AI will think, and then speak the response back to you.</p>
         </div>
 
         <div class="glass-card p-8 rounded-2xl">
@@ -363,7 +318,8 @@
             
             <!-- Visualizer -->
             <div id="voice-visualizer" class="mt-6 flex items-center justify-center gap-1 h-8 opacity-30 transition-opacity duration-300">
-                <div class="bar h-2"></div><div class="bar h-4"></div><div class="bar h-2"></div><div class="bar h-4"></div>
+                <div class="bar h-2"></div><div class="bar h-4"></div><div class="bar h-2"></div><div class="bar h-6"></div>
+                <div class="bar h-3"></div><div class="bar h-5"></div><div class="bar h-2"></div><div class="bar h-4"></div>
                 <div class="bar h-2"></div><div class="bar h-5"></div><div class="bar h-3"></div><div class="bar h-2"></div>
             </div>
         </div>
@@ -373,14 +329,14 @@
     <section id="3d-demo" class="max-w-5xl mx-auto px-4 py-20 pb-32">
         <div class="text-center mb-10">
             <h2 class="text-3xl font-serif text-brand-900">Interactive Living Persona</h2>
-            <p class="text-gray-600 mt-2">Chat with a realistic avatar. It tracks you, breathes, and speaks with ElevenLabs audio.</p>
+            <p class="text-gray-600 mt-2">Chat with a realistic avatar. It moves, blinks, and syncs lips to speech.</p>
         </div>
 
         <div class="glass-card p-2 rounded-2xl relative">
             <div id="canvas-container" class="bg-gradient-to-b from-gray-200 to-white">
                 <div id="loader" class="text-brand-600 font-medium animate-pulse flex flex-col items-center gap-2">
                     <i data-lucide="loader" class="w-6 h-6 animate-spin"></i>
-                    Loading 3D Model...
+                    Loading 3D Human Model...
                 </div>
                 
                 <!-- Chat Overlay -->
@@ -412,132 +368,93 @@
         let wsConnected = false;
         let pendingResolver = null; 
         
-        // 3D & Animation State
         let avatarMesh = null;
-        let headBone = null;
-        let neckBone = null;
-        let chestBone = null;
         let isSpeaking = false;
         let clock = new THREE.Clock();
-        
-        // Mouse Tracking
-        let mouseX = 0;
-        let mouseY = 0;
 
-        // Conversation History
+        // Conversation History Storage
         let conversationHistory = [];
 
-        // Current Settings
+        // Default Persona
+        const DEFAULT_PERSONA = {
+            name: "Nana",
+            age: "75",
+            role: "Wise Grandfather",
+            traits: "Kind, patient, nostalgic about India, loves poetry.",
+            style: "Slow, warm, comforting. Uses 'hmm', 'ah', and simple affectionate English."
+        };
+
+        // Current Prompt
         let currentSystemPrompt = "";
-        let currentVoiceId = "2EiwWnXFnvU5JabPnv8n"; // Default Clyde
 
-        // --- ELEVENLABS VOICE LIBRARY ---
-        // High-Quality ElevenLabs Voice IDs
-        const VOICE_PRESETS = [
-            // MALES
-            { id: "2EiwWnXFnvU5JabPnv8n", name: "Clyde", gender: "male", age: "old", desc: "Deep, Gravelly (War Veteran)" },
-            { id: "ErXwobaYiN019PkySvjV", name: "Antoni", gender: "male", age: "mid", desc: "Balanced, Reliable" },
-            { id: "N2lVSneC6ww5rezk0p8l", name: "Adam", gender: "male", age: "mid", desc: "Deep, Narrative" },
-            { id: "TxGEqnHWrfWFTfGW9XjX", name: "Josh", gender: "male", age: "young", desc: "Deep, Soft" },
-            
-            // FEMALES
-            { id: "EXAVITQu4vr4xnSDxMaL", name: "Bella", gender: "female", age: "young", desc: "Soft, American" },
-            { id: "21m00Tcm4TlvDq8ikWAM", name: "Rachel", gender: "female", age: "mid", desc: "Calm, Narrative" },
-            { id: "AZnzlk1XvdvUeBnXmlld", name: "Domi", gender: "female", age: "young", desc: "Strong, Emotive" },
-            { id: "ThT5KcBeYPX3keUQqHPh", name: "Dorothy", gender: "female", age: "old", desc: "British, Pleasant" },
-            { id: "FGY2WhTYpPnrIDTdsKH5", name: "Laura", gender: "female", age: "mid", desc: "Upbeat, Social" }
-        ];
+        // --- UI Helpers ---
+        window.toggleMobileMenu = () => {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('block');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('block');
+            }
+        }
 
-        // --- UI FUNCTIONS ---
-        window.renderVoiceGrid = () => {
-            const grid = document.getElementById('voice-grid');
-            grid.innerHTML = '';
-            
-            const genderFilter = document.getElementById('voice-filter-gender').value;
-            const ageFilter = document.getElementById('voice-filter-age').value;
-
-            const filtered = VOICE_PRESETS.filter(v => {
-                if(genderFilter !== 'all' && v.gender !== genderFilter) return false;
-                if(ageFilter !== 'all' && v.age !== ageFilter) return false;
-                return true;
-            });
-
-            filtered.forEach(v => {
-                const card = document.createElement('div');
-                card.className = `voice-card bg-gray-50 p-3 rounded-lg cursor-pointer hover:shadow-md flex items-center justify-between ${currentVoiceId === v.id ? 'selected' : ''}`;
-                card.onclick = () => selectVoice(v);
-                card.innerHTML = `
-                    <div>
-                        <div class="font-bold text-xs text-brand-900">${v.name}</div>
-                        <div class="text-[10px] text-gray-500 uppercase">${v.desc}</div>
-                    </div>
-                    <div class="w-6 h-6 rounded-full bg-white border border-gray-200 flex items-center justify-center text-brand-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path></svg>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        };
-
-        window.selectVoice = (voice) => {
-            currentVoiceId = voice.id;
-            document.getElementById('current-voice-name').innerText = `${voice.name} (${voice.desc})`;
-            renderVoiceGrid(); 
-        };
-
-        // --- GLOBAL SETUP ---
         window.togglePersonaModal = () => {
             const modal = document.getElementById('persona-modal');
             modal.classList.toggle('hidden');
-            if(!modal.classList.contains('hidden')) {
-                updatePreview();
-                renderVoiceGrid();
-            }
-        }
-        
-        // Mobile Menu Toggle
-        window.toggleMobileMenu = () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+            // Update preview on open
+            if(!modal.classList.contains('hidden')) updatePreview();
         }
 
         window.updatePreview = () => {
-            const name = document.getElementById('p-name').value;
-            const age = document.getElementById('p-role').value;
-            const traits = document.getElementById('p-traits').value;
-            
-            const prompt = `You are ${name}, a ${age}. Your personality is ${traits}. Keep responses concise.`;
+            const name = document.getElementById('p-name').value || DEFAULT_PERSONA.name;
+            const age = document.getElementById('p-age').value || DEFAULT_PERSONA.age;
+            const role = document.getElementById('p-role').value || DEFAULT_PERSONA.role;
+            const traits = document.getElementById('p-traits').value || DEFAULT_PERSONA.traits;
+            const style = document.getElementById('p-style').value || DEFAULT_PERSONA.style;
+
+            const prompt = `You are ${name}, a ${age}-year-old ${role}. Your personality is ${traits}. You speak in a ${style} manner. Keep responses concise (under 2 sentences).`;
             document.getElementById('prompt-preview').innerText = prompt;
         }
 
-        ['p-name', 'p-role', 'p-traits'].forEach(id => {
+        // Listen for input changes
+        ['p-name', 'p-age', 'p-role', 'p-traits', 'p-style'].forEach(id => {
             document.getElementById(id).addEventListener('input', window.updatePreview);
         });
 
         window.savePersona = () => {
-            const name = document.getElementById('p-name').value;
-            const role = document.getElementById('p-role').value;
-            const traits = document.getElementById('p-traits').value;
+            const name = document.getElementById('p-name').value || DEFAULT_PERSONA.name;
+            const age = document.getElementById('p-age').value || DEFAULT_PERSONA.age;
+            const role = document.getElementById('p-role').value || DEFAULT_PERSONA.role;
+            const traits = document.getElementById('p-traits').value || DEFAULT_PERSONA.traits;
+            const style = document.getElementById('p-style').value || DEFAULT_PERSONA.style;
 
-            currentSystemPrompt = `You are ${name}, a ${role}. Your personality is ${traits}. You speak in a manner consistent with your age and role. Keep responses concise (under 2 sentences) so you can speak them easily.`;
+            currentSystemPrompt = `You are ${name}, a ${age}-year-old ${role}. Your personality is ${traits}. You speak in a ${style} manner. Keep responses concise (under 2 sentences) so you can speak them easily.`;
             
+            // Clear Memory on Persona Change
             conversationHistory = [];
+            
             togglePersonaModal();
+            
+            // Add system message to chat history to indicate change
             const history = document.getElementById('chat-history');
-            history.innerHTML += `<div class="w-full text-center text-xs text-gray-400 my-2 italic">Persona updated to: ${name}. Voice: ${currentVoiceProfile.name}. Memory reset.</div>`;
+            history.innerHTML += `<div class="w-full text-center text-xs text-gray-400 my-2 italic">Persona updated to: ${name}. Memory reset.</div>`;
             history.scrollTop = history.scrollHeight;
         }
 
         window.resetPersona = () => {
-            document.getElementById('p-name').value = "Nana";
-            document.getElementById('p-role').value = "75-year-old Wise Grandfather";
-            document.getElementById('p-traits').value = "Kind, patient, nostalgic about India.";
-            const defaultVoice = VOICE_PRESETS.find(v => v.name === "Clyde");
-            if(defaultVoice) selectVoice(defaultVoice);
+            document.getElementById('p-name').value = DEFAULT_PERSONA.name;
+            document.getElementById('p-age').value = DEFAULT_PERSONA.age;
+            document.getElementById('p-role').value = DEFAULT_PERSONA.role;
+            document.getElementById('p-traits').value = DEFAULT_PERSONA.traits;
+            document.getElementById('p-style').value = DEFAULT_PERSONA.style;
+            
+            // Clear Memory
             conversationHistory = [];
+            
             window.updatePreview();
         }
 
-        // --- EXISTING UTILS ---
         window.scrollToSection = (id) => {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
@@ -554,146 +471,203 @@
         });
 
         function updateStatus(status) {
-            // Desktop Status
             const el = document.getElementById('connection-status');
-            
-            // Mobile Status
-            const mobileEl = document.getElementById('mobile-connection-status');
-            const mobileText = document.getElementById('mobile-connection-text');
+            const elMobile = document.getElementById('connection-status-mobile');
             
             if (status === 'online') {
                 el.className = "flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium border border-green-200 mr-2";
                 el.innerHTML = `<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> AI System Online`;
                 
-                if(mobileEl) {
-                    mobileEl.className = "w-2 h-2 rounded-full bg-green-500 animate-pulse";
-                    mobileText.textContent = "AI Online";
+                if(elMobile) {
+                    elMobile.className = "flex items-center gap-2 px-2 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-medium border border-green-200 transition-colors";
+                    elMobile.innerHTML = `<div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div> Online`;
                 }
+                
                 wsConnected = true;
             } else {
                 el.className = "flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-medium border border-red-200 mr-2";
                 el.innerHTML = `<div class="w-2 h-2 rounded-full bg-red-500"></div> Offline`;
-                
-                if(mobileEl) {
-                    mobileEl.className = "w-2 h-2 rounded-full bg-red-500";
-                    mobileText.textContent = "Offline";
+
+                if(elMobile) {
+                    elMobile.className = "flex items-center gap-2 px-2 py-1 bg-red-50 text-red-700 rounded-full text-[10px] font-medium border border-red-200 transition-colors";
+                    elMobile.innerHTML = `<div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> Offline`;
                 }
+
                 wsConnected = false;
             }
         }
 
-        // --- WEBSOCKET ---
+        // --- WEBSOCKET LOGIC ---
         function connectWebSocket() {
+            // UPDATED WebSocket URL
             const url = "wss://927bbfd72075.ngrok-free.app/"; 
             console.log("Connecting to WebSocket:", url);
             
             try {
                 ws = new WebSocket(url);
-                ws.onopen = () => { updateStatus('online'); };
+
+                ws.onopen = () => {
+                    console.log("Connected to AI Server");
+                    updateStatus('online');
+                };
+
                 ws.onmessage = (event) => {
+                    let responseText = event.data;
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.response) responseText = data.response;
+                        else if (data.message) responseText = data.message;
+                        else if (data.content) responseText = data.content;
+                    } catch (e) {}
+
                     if (pendingResolver) {
-                        try {
-                            const data = JSON.parse(event.data);
-                            pendingResolver(data); // Resolve with full JSON (text + audio)
-                        } catch (e) {
-                            pendingResolver({ text: event.data });
-                        }
+                        pendingResolver(responseText);
                         pendingResolver = null;
                     }
                 };
-                ws.onclose = () => { updateStatus('offline'); setTimeout(connectWebSocket, 5000); };
-                ws.onerror = (error) => { updateStatus('offline'); };
-            } catch (e) { updateStatus('offline'); }
+
+                ws.onclose = () => {
+                    updateStatus('offline');
+                    setTimeout(connectWebSocket, 5000);
+                };
+
+                ws.onerror = (error) => {
+                    updateStatus('offline');
+                };
+            } catch (e) {
+                updateStatus('offline');
+            }
         }
 
-        async function callBackend(userText) {
-            if (!ws || !wsConnected) { alert("System is offline."); return null; }
+        async function callOllama(userText) {
+            if (!ws || !wsConnected) {
+                alert("System is offline. Please check your server connection.");
+                return null;
+            }
+
             return new Promise((resolve, reject) => {
                 pendingResolver = resolve;
                 
+                // 1. Add User message to history
                 conversationHistory.push(`User: ${userText}`);
+                
+                // 2. Construct full prompt from history
                 const fullPrompt = conversationHistory.join("\n") + "\nAI:"; 
                 
-                // IMPORTANT: Send voice_id to backend
-                const payload = { 
+                const payload = {
                     prompt: fullPrompt, 
                     system: currentSystemPrompt, 
-                    voice_id: currentVoiceId,
                     model: "memoria-v1" 
                 };
+                
                 ws.send(JSON.stringify(payload));
                 
-                setTimeout(() => { if (pendingResolver) console.warn("Timeout"); }, 20000);
+                setTimeout(() => {
+                    if (pendingResolver) {
+                        console.warn("Timeout waiting for AI response");
+                    }
+                }, 10000);
             });
         }
 
-        // --- AUDIO PLAYBACK ---
-        function playBase64Audio(base64String, onStart, onEnd) {
-            const audioUrl = "data:audio/mp3;base64," + base64String;
-            const audio = new Audio(audioUrl);
+        // --- SPEECH SYNTHESIS HELPER ---
+        function speakText(text, onStart, onEnd) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
             
-            audio.onplay = () => { if(onStart) onStart(); };
-            audio.onended = () => { if(onEnd) onEnd(); };
-            audio.play();
+            // Tuning
+            utterance.rate = 0.8; 
+            utterance.pitch = 0.9; 
+            utterance.volume = 1.0;
+            
+            const voices = window.speechSynthesis.getVoices();
+            const maleVoice = voices.find(v => 
+                v.name.includes("Google UK English Male") || 
+                v.name.includes("Microsoft David") ||
+                v.name.toLowerCase().includes("male")
+            );
+            
+            if (maleVoice) utterance.voice = maleVoice;
+
+            utterance.onstart = () => { if(onStart) onStart(); };
+            utterance.onend = () => { if(onEnd) onEnd(); };
+            
+            window.speechSynthesis.speak(utterance);
         }
 
-        // --- 1. CHAT ---
+        // --- 1. TEXT CHATBOT ---
         window.sendChatMessage = async () => {
             const input = document.getElementById('chat-input');
             const history = document.getElementById('chat-history');
             const msg = input.value.trim();
             if (!msg) return;
-            
+
             input.value = '';
             history.innerHTML += `<div class="flex items-start gap-3 max-w-[80%] self-end flex-row-reverse"><div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white shrink-0"><i data-lucide="user" class="w-4 h-4"></i></div><div class="bg-brand-600 text-white p-4 rounded-2xl rounded-tr-none text-sm">${msg}</div></div>`;
+            
             const loadingId = 'loading-' + Date.now();
-            history.innerHTML += `<div id="${loadingId}" class="flex items-start gap-3 max-w-[80%]"><div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-5 h-5 text-brand-600"></i></div><div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex gap-1 items-center h-12"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+            history.innerHTML += `
+                <div id="${loadingId}" class="flex items-start gap-3 max-w-[80%]">
+                    <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0"><i data-lucide="bot" class="w-5 h-5 text-brand-600"></i></div>
+                    <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex gap-1 items-center h-12">
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
             history.scrollTop = history.scrollHeight;
             lucide.createIcons();
+
+            const reply = await callOllama(msg);
             
-            const response = await callBackend(msg);
-            
-            if (response && response.text) conversationHistory.push(`AI: ${response.text}`);
+            // 3. Add AI response to history
+            if (reply) {
+                conversationHistory.push(`AI: ${reply}`);
+            }
             
             const loader = document.getElementById(loadingId);
             if(loader) loader.remove();
-            
-            if (response && response.text) {
-                history.innerHTML += `<div class="flex items-start gap-3 max-w-[80%]"><div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0 text-brand-600"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-4 rounded-2xl rounded-tl-none border border-gray-100 text-sm text-gray-700">${response.text}</div></div>`;
+
+            if (reply) {
+                history.innerHTML += `<div class="flex items-start gap-3 max-w-[80%]"><div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center shrink-0 text-brand-600"><i data-lucide="bot" class="w-4 h-4"></i></div><div class="bg-white p-4 rounded-2xl rounded-tl-none border border-gray-100 text-sm text-gray-700">${reply}</div></div>`;
                 history.scrollTop = history.scrollHeight;
                 lucide.createIcons();
             }
         }
 
-        // --- 2. VOICE ---
+        // --- 2. VOICE CHATBOT ---
         window.sendVoiceMessage = async () => {
             const input = document.getElementById('voice-input');
             const display = document.getElementById('voice-chat-display');
             const visualizer = document.getElementById('voice-visualizer');
             const msg = input.value.trim();
             if (!msg) return;
-            
+
             display.innerText = "User: " + msg;
             input.value = "";
-            display.innerHTML += `<br><span class="text-brand-500 text-xs animate-pulse">Thinking & Generating Voice...</span>`;
             
-            const response = await callBackend(msg);
+            const originalText = display.innerHTML;
+            display.innerHTML += `<br><span class="text-brand-500 text-xs animate-pulse">Thinking...</span>`;
+
+            const reply = await callOllama(msg);
             
-            if (response && response.text) {
-                conversationHistory.push(`AI: ${response.text}`);
-                display.innerHTML = `User: ${msg}<br><br><strong>AI:</strong> ${response.text}`;
+            if (reply) {
+                // Add to history logic is handled in callOllama now for the prompt construction,
+                // but we also need to push the AI reply here if callOllama returned successfully
+                conversationHistory.push(`AI: ${reply}`);
+                
+                display.innerHTML = `User: ${msg}<br><br><strong>AI:</strong> ${reply}`;
                 display.scrollTop = display.scrollHeight;
                 
-                if (response.audio) {
-                    playBase64Audio(response.audio, 
-                        () => { visualizer.classList.remove('opacity-30'); visualizer.classList.add('playing'); },
-                        () => { visualizer.classList.add('opacity-30'); visualizer.classList.remove('playing'); }
-                    );
-                }
+                speakText(reply, 
+                    () => { visualizer.classList.remove('opacity-30'); visualizer.classList.add('playing'); },
+                    () => { visualizer.classList.add('opacity-30'); visualizer.classList.remove('playing'); }
+                );
+            } else {
+                display.innerHTML = originalText + `<br><span class="text-red-500 text-xs">Connection Error.</span>`;
             }
         }
 
-        // --- 3. AVATAR ---
+        // --- 3. 3D AVATAR & LIP SYNC ---
         window.sendAvatarMessage = async () => {
             const input = document.getElementById('avatar-input');
             const msg = input.value.trim();
@@ -703,25 +677,22 @@
             input.value = "";
             input.placeholder = "Thinking...";
             input.disabled = true;
-            
-            const response = await callBackend(msg);
+
+            const reply = await callOllama(msg);
             
             input.placeholder = originalPlaceholder;
             input.disabled = false;
             input.focus();
-            
-            if (response && response.text) {
-                conversationHistory.push(`AI: ${response.text}`);
-                if (response.audio) {
-                    playBase64Audio(response.audio, 
-                        () => { isSpeaking = true; }, 
-                        () => { isSpeaking = false; resetMouth(); }
-                    );
-                }
+
+            if (reply) {
+                conversationHistory.push(`AI: ${reply}`);
+                speakText(reply, 
+                    () => { isSpeaking = true; }, 
+                    () => { isSpeaking = false; resetMouth(); }
+                );
             }
         }
 
-        // --- 3D SETUP ---
         function resetMouth() {
             if (avatarMesh && avatarMesh.morphTargetInfluences) {
                 const mouthIdx = avatarMesh.morphTargetDictionary['mouthOpen'] || avatarMesh.morphTargetDictionary['jawOpen'];
@@ -732,65 +703,70 @@
         function updateLipSync() {
             if (!avatarMesh || !isSpeaking) return;
             const time = Date.now() * 0.02;
-            const value = (Math.sin(time * 0.8) + Math.cos(time * 1.2)) * 0.4 + 0.1; 
+            const value = (Math.sin(time) + 1) * 0.3 + 0.1; 
             const mouthIdx = avatarMesh.morphTargetDictionary['mouthOpen'] || avatarMesh.morphTargetDictionary['jawOpen'];
-            if (mouthIdx !== undefined) avatarMesh.morphTargetInfluences[mouthIdx] = Math.max(0, value);
+            if (mouthIdx !== undefined) avatarMesh.morphTargetInfluences[mouthIdx] = value;
         }
 
         function initThreeJS() {
             const container = document.getElementById('canvas-container');
             const width = container.clientWidth;
             const height = container.clientHeight;
+
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xe3e9e7);
+
             const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
             camera.position.set(0, 1.6, 1.5); 
+
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
             renderer.shadowMap.enabled = true;
             container.appendChild(renderer.domElement);
-            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
+
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
             scene.add(hemiLight);
-            const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
-            dirLight.position.set(2, 2, 2);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(0, 2, 2);
             dirLight.castShadow = true;
             scene.add(dirLight);
+
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enablePan = false;
-            controls.target.set(0, 1.4, 0);
+            controls.target.set(0, 1.5, 0);
             controls.update();
+
             const loader = new GLTFLoader();
             
-            document.addEventListener('mousemove', (e) => {
-                const rect = container.getBoundingClientRect();
-                if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
-                    mouseX = ((e.clientX - rect.left) / width) * 2 - 1;
-                    mouseY = -((e.clientY - rect.top) / height) * 2 + 1;
-                }
-            });
-
-            loader.load('https://models.readyplayer.me/63ac69548d4557e5074d88da.glb', 
-                function (gltf) {
-                    document.getElementById('loader').style.display = 'none';
-                    const model = gltf.scene;
-                    model.traverse((o) => {
-                        if (o.isMesh) {
-                            o.castShadow = true;
-                            if (o.morphTargetDictionary && (o.name.includes('Head') || o.name.includes('Wolf3D_Head'))) {
-                                avatarMesh = o;
+            const loadModel = (url, isFallback = false) => {
+                loader.load(url, 
+                    function (gltf) {
+                        document.getElementById('loader').style.display = 'none';
+                        const model = gltf.scene;
+                        model.traverse((o) => {
+                            if (o.isMesh) {
+                                o.castShadow = true;
+                                if (o.morphTargetDictionary && (o.name.includes('Head') || o.name.includes('Wolf3D_Head'))) {
+                                    avatarMesh = o;
+                                }
                             }
+                        });
+                        scene.add(model);
+                    },
+                    undefined,
+                    function (error) {
+                        console.error("Error loading model:", error);
+                        if (!isFallback) {
+                            console.log("Loading fallback model...");
+                            loadModel('https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb', true);
+                        } else {
+                            document.getElementById('loader').innerText = "Error loading avatar.";
                         }
-                        if (o.isBone) {
-                            if (o.name === 'Head') headBone = o;
-                            if (o.name === 'Neck') neckBone = o;
-                            if (o.name === 'Spine2' || o.name === 'Spine') chestBone = o;
-                        }
-                    });
-                    scene.add(model);
-                },
-                undefined,
-                function (error) { console.error("Error loading model:", error); }
-            );
+                    }
+                );
+            };
+
+            loadModel('https://models.readyplayer.me/63ac69548d4557e5074d88da.glb');
 
             let eyeBlinkTimer = 0;
             function updateBlink(delta) {
@@ -814,18 +790,12 @@
             function animate() {
                 requestAnimationFrame(animate);
                 const delta = clock.getDelta();
-                const time = clock.getElapsedTime();
                 updateLipSync();
                 updateBlink(delta);
-                if (headBone) {
-                    headBone.rotation.x = THREE.MathUtils.lerp(headBone.rotation.x, mouseY * 0.3, 0.1);
-                    headBone.rotation.y = THREE.MathUtils.lerp(headBone.rotation.y, -mouseX * 0.3, 0.1);
-                }
-                if (neckBone) neckBone.rotation.y = THREE.MathUtils.lerp(neckBone.rotation.y, -mouseX * 0.15, 0.1);
-                if (chestBone) chestBone.rotation.x = Math.sin(time * 1.5) * 0.03;
                 renderer.render(scene, camera);
             }
             animate();
+
             window.addEventListener('resize', () => {
                 const newWidth = container.clientWidth;
                 const newHeight = container.clientHeight;
@@ -837,10 +807,11 @@
 
         window.onload = () => {
             lucide.createIcons();
-            // Default load
+            // Initialize prompt with defaults
             resetPersona();
+            
             initThreeJS();
-            // Connect to backend
+            window.speechSynthesis.getVoices();
             connectWebSocket();
         };
     </script>

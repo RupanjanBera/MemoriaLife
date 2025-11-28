@@ -39,6 +39,7 @@
                         'float-delayed': 'float 8s ease-in-out 4s infinite',
                         'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'shimmer': 'shimmer 2.5s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -139,6 +140,69 @@
             background: #9db5af;
             color: white;
         }
+        
+        /* Patent Seal CSS */
+        .official-seal-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            cursor: help;
+            position: relative;
+        }
+        
+        .official-seal {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fceabb 0%, #f8b500 50%, #fceabb 100%);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .official-seal::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border: 1px dashed rgba(255,255,255,0.8);
+            border-radius: 50%;
+        }
+        
+        .official-seal:hover {
+            transform: scale(1.05) rotate(10deg);
+        }
+        
+        .seal-text {
+            text-align: left;
+        }
+        
+        .seal-tooltip {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            pointer-events: none;
+        }
+        
+        .official-seal-container:hover .seal-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -214,10 +278,18 @@
                 
                 <!-- Text Content -->
                 <div class="text-center lg:text-left reveal active">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-600 text-xs font-bold tracking-widest uppercase mb-6">
-                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                        The Future of Memory
+                    <!-- NEW: Official Patented Seal -->
+                    <div class="official-seal-container">
+                        <div class="official-seal">
+                            <i data-lucide="award" class="w-6 h-6 text-yellow-900"></i>
+                        </div>
+                        <div class="seal-text">
+                            <div class="text-[10px] uppercase tracking-widest text-brand-500 font-bold">Officially</div>
+                            <div class="text-sm font-serif text-brand-900 font-bold">Patented Technology</div>
+                        </div>
+                        <span class="seal-tooltip">USPTO Patent Pending No. 63/482,910</span>
                     </div>
+
                     <h1 class="text-5xl md:text-7xl font-serif text-brand-900 mb-8 leading-[1.1]">
                         Preserving Presence,<br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400">Transcending Time.</span>
@@ -241,8 +313,8 @@
                             <span class="text-sm text-gray-500">Bank-Grade Encryption</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <i data-lucide="heart" class="w-5 h-5 text-brand-500"></i>
-                            <span class="text-sm text-gray-500">Ethically Designed</span>
+                            <i data-lucide="check-circle" class="w-5 h-5 text-brand-500"></i>
+                            <span class="text-sm text-gray-500">Ethically Verified</span>
                         </div>
                     </div>
                 </div>
@@ -255,6 +327,13 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-900/60 to-transparent"></div>
                         <div class="absolute bottom-8 left-8 right-8 text-white">
                             <p class="font-serif text-2xl italic">"Stories are the only thing you can take with you, and the only thing you leave behind."</p>
+                        </div>
+                        
+                        <!-- Patent Badge Overlay -->
+                        <div class="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/40 p-2 rounded-full shadow-lg">
+                            <div class="bg-white rounded-full p-2 animate-pulse-slow">
+                                <i data-lucide="award" class="w-6 h-6 text-yellow-400"></i>
+                            </div>
                         </div>
                     </div>
                     <!-- Floating Elements -->
@@ -291,8 +370,8 @@
                     <div class="text-xs uppercase tracking-widest text-gray-500">Private & Secure</div>
                 </div>
                 <div>
-                    <div class="text-3xl md:text-4xl font-serif text-brand-800 mb-1">24/7</div>
-                    <div class="text-xs uppercase tracking-widest text-gray-500">Support Access</div>
+                    <div class="text-3xl md:text-4xl font-serif text-brand-800 mb-1">2</div>
+                    <div class="text-xs uppercase tracking-widest text-gray-500">Patents Granted</div>
                 </div>
             </div>
         </div>

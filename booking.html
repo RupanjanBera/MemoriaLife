@@ -74,24 +74,26 @@
         .receipt-container::before { top: -6px; }
         .receipt-container::after { bottom: -6px; background-position: -7px -2px; }
 
-        /* Payment Wrapper & Shine Effect */
+        /* Payment Container Theming (Green Glow + Shine) */
         .payment-wrapper {
             position: relative;
-            border-radius: 0.5rem;
-            padding: 6px;
+            border-radius: 2rem; /* Matches pill shape */
+            padding: 4px;
             background: transparent;
+            border: 1px solid transparent;
             transition: all 0.4s ease;
             overflow: hidden;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
         
         .payment-wrapper:hover {
-            background: linear-gradient(135deg, #e3e9e7, #c5d3cf);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-color: #9db5af; /* Light Brand Green */
+            background: linear-gradient(135deg, #f4f7f6, #ffffff);
+            box-shadow: 0 10px 25px rgba(86, 118, 113, 0.15); /* Greenish Shadow */
             transform: translateY(-2px);
         }
 
-        /* The Shimmer Animation line */
+        /* Shine Animation */
         .payment-wrapper::after {
             content: '';
             position: absolute;
@@ -227,7 +229,7 @@
                                 
                                 <div class="py-5 border-y border-dashed border-gray-200 my-4 space-y-3">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-brand-900 font-medium">Initial Deposit</span>
+                                        <span class="text-brand-900 font-medium">Test Deposit</span>
                                         <span class="font-bold text-brand-900" id="booking-fee-display">...</span>
                                     </div>
                                     <div class="flex justify-between items-center text-xs text-green-600">
@@ -242,7 +244,7 @@
                                         <span class="text-3xl font-serif font-bold text-brand-800" id="total-due-display">...</span>
                                     </div>
                                     <div class="text-[10px] text-brand-600 font-bold bg-brand-50 border border-brand-100 px-2 py-1 rounded uppercase tracking-wide">
-                                        Deposit
+                                        Test Mode
                                     </div>
                                 </div>
                             </div>
@@ -281,12 +283,10 @@
 
         // 1. CONFIGURATION
         const PAYPAL_CLIENT_ID = "Abj4GKhw0aoqQes156AfApLm2wN5PAF5ncEUA_M-Dtzaj22yUzczA7tzf5LrsP7ufTj2ERxhUIEscsRF";
-        
-        // --- UPDATED NGROK WSS URL ---
-        const WS_URL = "wss://josef-gametophoric-tyrone.ngrok-free.dev";
+        const WS_URL = "wss://josef-gametophoric-tyrone.ngrok-free.dev"; // Secure Ngrok Link
 
-        let userCurrency = 'USD'; // Strict Default
-        let bookingFee = 8.00;    // Strict Default
+        let userCurrency = 'USD'; // Default
+        let bookingFee = 0.01;    // Test Amount Default
         let ws;
 
         // 2. DETECT LOCATION & INITIALIZE
@@ -300,18 +300,18 @@
                 const data = await response.json();
                 
                 if (data.country_code === 'IN') {
-                    console.log("Region: India Detected. Switching to INR.");
+                    console.log("Region: India Detected.");
                     userCurrency = 'INR';
-                    bookingFee = 650.00;
+                    bookingFee = 1.00; // 1 Rupee for Testing
                 } else {
-                    console.log("Region: International. Using USD.");
+                    console.log("Region: International.");
                     userCurrency = 'USD';
-                    bookingFee = 8.00;
+                    bookingFee = 0.01; // 1 Cent for Testing
                 }
             } catch (e) {
                 console.warn("Location detection failed/blocked. Defaulting to USD.");
                 userCurrency = 'USD';
-                bookingFee = 8.00;
+                bookingFee = 0.01;
             }
 
             document.getElementById('receipt-content').style.opacity = '1';
@@ -323,7 +323,6 @@
         // 3. LOAD PAYPAL SDK DYNAMICALLY
         function loadPayPalScript() {
             const script = document.createElement('script');
-            // 'enable-funding=venmo' allows Venmo if available
             script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${userCurrency}&enable-funding=venmo`;
             script.onload = () => {
                 renderPayPalButtons();
@@ -331,7 +330,7 @@
             document.head.appendChild(script);
         }
 
-        // 4. WEBSOCKET CONNECTION (Ngrok)
+        // 4. WEBSOCKET CONNECTION
         function initWebSocket() {
             ws = new WebSocket(WS_URL);
             
@@ -378,14 +377,14 @@
             }
         }
 
-        // 6. RENDER PAYPAL BUTTONS (Black Pill + Shine Wrapper)
+        // 6. RENDER PAYPAL BUTTONS (Silver theme to match Luxury)
         function renderPayPalButtons() {
             document.getElementById('paypal-button-container').innerHTML = "";
             
             paypal.Buttons({
                 style: {
                     layout: 'vertical',
-                    color:  'black',      
+                    color:  'silver',     // Changed to Silver to match elegant/white theme (Green not supported by PayPal)
                     shape:  'pill',       
                     label:  'pay',
                     height: 48            
@@ -414,7 +413,7 @@
                 createOrder: function(data, actions) {
                     return actions.order.create({
                         purchase_units: [{
-                            description: "MemoriaLife Secure Deposit",
+                            description: "MemoriaLife Secure Deposit (TEST)",
                             amount: {
                                 value: bookingFee.toString(),
                                 currency_code: userCurrency
@@ -429,7 +428,7 @@
                     return actions.order.capture().then(function(details) {
                         console.log("PayPal Authorized. Verifying with Backend...");
                         
-                        // Backend Verification via Ngrok WSS
+                        // Backend Verification
                         ws.send(JSON.stringify({
                             type: "verify_payment",
                             orderID: data.orderID, 

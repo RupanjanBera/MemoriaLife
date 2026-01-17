@@ -229,7 +229,7 @@
                                 
                                 <div class="py-5 border-y border-dashed border-gray-200 my-4 space-y-3">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-brand-900 font-medium">Initial Deposit</span>
+                                        <span class="text-brand-900 font-medium">Test Deposit</span>
                                         <span class="font-bold text-brand-900" id="booking-fee-display">...</span>
                                     </div>
                                     <div class="flex justify-between items-center text-xs text-green-600">
@@ -244,7 +244,7 @@
                                         <span class="text-3xl font-serif font-bold text-brand-800" id="total-due-display">...</span>
                                     </div>
                                     <div class="text-[10px] text-brand-600 font-bold bg-brand-50 border border-brand-100 px-2 py-1 rounded uppercase tracking-wide">
-                                        Deposit
+                                        Test Mode
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +286,7 @@
         const WS_URL = "wss://josef-gametophoric-tyrone.ngrok-free.dev"; // Secure Ngrok Link
 
         let userCurrency = 'USD'; // Default
-        let bookingFee = 8.00;    // Default Standard Amount
+        let bookingFee = 0.01;    // Test Amount Default
         let ws;
 
         // 2. DETECT LOCATION & INITIALIZE
@@ -302,16 +302,16 @@
                 if (data.country_code === 'IN') {
                     console.log("Region: India Detected.");
                     userCurrency = 'INR';
-                    bookingFee = 650.00; // Standard INR Fee
+                    bookingFee = 1.00; // 1 Rupee for Testing
                 } else {
                     console.log("Region: International.");
                     userCurrency = 'USD';
-                    bookingFee = 8.00; // Standard USD Fee
+                    bookingFee = 0.01; // 1 Cent for Testing
                 }
             } catch (e) {
                 console.warn("Location detection failed/blocked. Defaulting to USD.");
                 userCurrency = 'USD';
-                bookingFee = 8.00;
+                bookingFee = 0.01;
             }
 
             document.getElementById('receipt-content').style.opacity = '1';
@@ -378,14 +378,14 @@
             }
         }
 
-        // 6. RENDER PAYPAL BUTTONS
+        // 6. RENDER PAYPAL BUTTONS (Silver theme to match Luxury)
         function renderPayPalButtons() {
             document.getElementById('paypal-button-container').innerHTML = "";
             
             paypal.Buttons({
                 style: {
                     layout: 'vertical',
-                    color:  'silver',     // Silver matches white/green luxury theme better than black/gold
+                    color:  'silver',     // Changed to Silver to match elegant/white theme (Green not supported by PayPal)
                     shape:  'pill',       
                     label:  'pay',
                     height: 48            
@@ -414,7 +414,7 @@
                 createOrder: function(data, actions) {
                     return actions.order.create({
                         purchase_units: [{
-                            description: "MemoriaLife Secure Deposit",
+                            description: "MemoriaLife Secure Deposit (TEST)",
                             amount: {
                                 value: bookingFee.toString(),
                                 currency_code: userCurrency

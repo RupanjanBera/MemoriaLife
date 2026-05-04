@@ -77,7 +77,7 @@
         /* Payment Container Theming (Green Glow + Shine) */
         .payment-wrapper {
             position: relative;
-            border-radius: 2rem; /* Matches pill shape */
+            border-radius: 2rem;
             padding: 4px;
             background: transparent;
             border: 1px solid transparent;
@@ -87,13 +87,12 @@
         }
         
         .payment-wrapper:hover {
-            border-color: #9db5af; /* Light Brand Green */
+            border-color: #9db5af;
             background: linear-gradient(135deg, #f4f7f6, #ffffff);
-            box-shadow: 0 10px 25px rgba(86, 118, 113, 0.15); /* Greenish Shadow */
+            box-shadow: 0 10px 25px rgba(86, 118, 113, 0.15);
             transform: translateY(-2px);
         }
 
-        /* Shine Animation */
         .payment-wrapper::after {
             content: '';
             position: absolute;
@@ -119,6 +118,63 @@
 
         .fade-in { animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === LUXURY PAY BUTTON STYLING (custom) === */
+        .payu-luxury-btn {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            border-radius: 9999px;          /* pill */
+            border: none;
+            background: linear-gradient(135deg, #425d59 0%, #567671 100%);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 20px rgba(66, 93, 89, 0.25), 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payu-luxury-btn:hover {
+            background: linear-gradient(135deg, #364845 0%, #425d59 100%);
+            box-shadow: 0 12px 28px rgba(66, 93, 89, 0.35), 0 6px 12px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .payu-luxury-btn:active {
+            transform: translateY(0px);
+            box-shadow: 0 4px 12px rgba(66, 93, 89, 0.3);
+        }
+
+        .payu-luxury-btn i {
+            stroke: #ffffff;
+        }
+
+        /* Subtle inner shine for luxury feel */
+        .payu-luxury-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.5s ease;
+        }
+
+        .payu-luxury-btn:hover::before {
+            left: 125%;
+        }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-brand-200">
@@ -229,7 +285,7 @@
                                 
                                 <div class="py-5 border-y border-dashed border-gray-200 my-4 space-y-3">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-brand-900 font-medium">Test Deposit</span>
+                                        <span class="text-brand-900 font-medium">Secure Deposit</span>
                                         <span class="font-bold text-brand-900" id="booking-fee-display">...</span>
                                     </div>
                                     <div class="flex justify-between items-center text-xs text-green-600">
@@ -243,9 +299,7 @@
                                         <span class="block text-[10px] text-gray-400 uppercase tracking-wider mb-1">Total Due Now</span>
                                         <span class="text-3xl font-serif font-bold text-brand-800" id="total-due-display">...</span>
                                     </div>
-                                    <div class="text-[10px] text-brand-600 font-bold bg-brand-50 border border-brand-100 px-2 py-1 rounded uppercase tracking-wide">
-                                        Test Mode
-                                    </div>
+                                    <!-- No more Test Mode badge -->
                                 </div>
                             </div>
                         </div>
@@ -274,41 +328,52 @@
                 <i data-lucide="shield" class="w-8 h-8 text-brand-600" id="modal-icon"></i>
             </div>
             <h3 class="text-2xl font-serif text-brand-900 mb-2" id="modal-title">Secure Verification</h3>
-            <p class="text-gray-500 text-sm mb-6 leading-relaxed" id="modal-desc">Please wait while we securely verify your transaction with PayPal...</p>
+            <p class="text-gray-500 text-sm mb-6 leading-relaxed" id="modal-desc">Please wait while we securely prepare your payment...</p>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // Global variables
-        let userCurrency = 'USD';        // INR or USD
-        let bookingFee = 0.01;          // Default test amount
+        // Global state
+        let userCurrency = 'INR';
+        let bookingFee = 650;            // ₹650 for INR customers
+        let exchangeRate = null;
+        let isUSD = false;
 
-        // Initialize page: detect location, update pricing, setup PayU button
         async function initPage() {
             document.getElementById('receipt-content').style.opacity = '0.5';
+
             try {
                 const response = await fetch('https://ipapi.co/json/');
                 const data = await response.json();
+                
                 if (data.country_code === 'IN') {
                     userCurrency = 'INR';
-                    bookingFee = 1.00;
+                    bookingFee = 650;
+                    isUSD = false;
                 } else {
                     userCurrency = 'USD';
-                    bookingFee = 0.01;
+                    isUSD = true;
+                    try {
+                        const rateRes = await fetch('https://api.exchangerate-api.com/v4/latest/INR');
+                        const rateData = await rateRes.json();
+                        exchangeRate = rateData.rates.USD;
+                    } catch (e) {
+                        exchangeRate = 0.012;
+                    }
+                    bookingFee = Math.round(650 * exchangeRate * 100) / 100;
                 }
             } catch (e) {
-                console.warn("Location detection failed, defaulting to USD.");
-                userCurrency = 'USD';
-                bookingFee = 0.01;
+                userCurrency = 'INR';
+                bookingFee = 650;
+                isUSD = false;
             }
+
             document.getElementById('receipt-content').style.opacity = '1';
             updateSummary();
-            setupPayUButton();
         }
 
-        // Dynamically update receipt and handle waitlist
         function updateSummary() {
             const selector = document.getElementById('plan-selector');
             const selectedOption = selector.options[selector.selectedIndex];
@@ -320,7 +385,7 @@
             const planPriceRaw = (userCurrency === 'INR') ? priceInr : priceUsd;
 
             document.getElementById('summary-plan-name').innerText = planName;
-            
+
             if (isWaitlist) {
                 document.getElementById('summary-plan-price').innerText = 'Waitlist';
                 document.getElementById('booking-fee-display').innerText = symbol + "0";
@@ -332,27 +397,39 @@
                 document.getElementById('total-due-display').innerText = symbol + bookingFee;
                 document.getElementById('paypal-button-container').style.display = 'block';
             }
+
+            renderPayButton();
         }
 
-        // Create PayU checkout button (pill style, silver/gray, matches original feel)
-        function setupPayUButton() {
+        function renderPayButton() {
             const container = document.getElementById('paypal-button-container');
-            container.innerHTML = ''; // clear placeholder
+            const selector = document.getElementById('plan-selector');
+            const selectedOption = selector.options[selector.selectedIndex];
+            const priceInr = selectedOption.getAttribute('data-price-inr');
+            const isWaitlist = (priceInr === 'Waitlist');
+
+            if (isWaitlist) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // Remove any existing button before re-adding
+            if (document.getElementById('payu-checkout-btn')) return;
+
+            container.innerHTML = '';
             const btn = document.createElement('button');
             btn.id = 'payu-checkout-btn';
-            btn.className = 'w-full py-3 px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-sm uppercase tracking-wider rounded-full shadow-md transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-brand-500';
+            btn.className = 'payu-luxury-btn';  // luxury custom class
             btn.innerHTML = '<i data-lucide="lock" class="w-4 h-4"></i> Pay with PayU';
             container.appendChild(btn);
-            lucide.createIcons(); // reinit icons inside button
+            lucide.createIcons();
             btn.addEventListener('click', handlePayUCheckout);
         }
 
-        // Main PayU flow: validate, show modal, fetch hash from backend, POST to PayU
         function handlePayUCheckout() {
             const form = document.getElementById('booking-form');
             const warning = document.getElementById('form-warning');
             
-            // Validate form
             if (!form.checkValidity()) {
                 warning.classList.remove('hidden');
                 form.reportValidity();
@@ -360,10 +437,8 @@
             }
             warning.classList.add('hidden');
 
-            // Show processing modal (reuse existing)
             showProcessingModal('Redirecting to PayU Secure Gateway', 'Please wait while we prepare your payment session...');
 
-            // Collect customer data
             const fullName = form.querySelector('input[name="full_name"]').value.trim();
             const phone = form.querySelector('input[name="phone"]').value.trim();
             const email = form.querySelector('input[name="email"]').value.trim();
@@ -374,13 +449,13 @@
                 name: fullName,
                 email: email,
                 phone: phone,
-                amount: bookingFee,           // dynamic test amount
+                amount: bookingFee,
                 currency: userCurrency,
                 planName: planName
             };
 
-            // Fetch PayU parameters from backend
-           fetch('https://1748-49-37-42-14.ngrok-free.app', {
+            // Use your ngrok URL (update when ngrok restarts)
+            fetch('https://1748-49-37-42-14.ngrok-free.app/create-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -388,16 +463,14 @@
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    showModalError('Payment Initialization Failed', data.error || 'Please try again.');
+                    showModalError('Payment Initialisation Failed', data.error);
                     return;
                 }
 
-                // Build hidden form and POST to PayU test gateway
                 const payuForm = document.createElement('form');
                 payuForm.method = 'POST';
                 payuForm.action = 'https://test.payu.in/_payment';
 
-                // Required PayU fields
                 const fields = ['key', 'txnid', 'amount', 'productinfo', 'firstname', 'email', 'phone', 'surl', 'furl', 'hash', 'txn_s2s_flow', 'service_provider'];
                 fields.forEach(field => {
                     if (data[field] !== undefined) {
@@ -410,30 +483,27 @@
                 });
 
                 document.body.appendChild(payuForm);
-                payuForm.submit(); // browser navigates to PayU, modal closes naturally
+                payuForm.submit();
             })
             .catch(error => {
                 console.error(error);
-                showModalError('Network Error', 'Could not connect to payment service. Please try again.');
+                showModalError('Network Error', 'Could not connect to payment service.');
             });
         }
 
-        // Modal helpers ----------------------------------------
         function showProcessingModal(title, message) {
             const modal = document.getElementById('payment-modal');
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-desc').innerText = message;
 
-            // Reset icon to shield (default)
             const icon = document.getElementById('modal-icon');
-            icon.innerHTML = ''; // clear previous content
-            icon.setAttribute('stroke', '#425d59'); // brand-600
-            lucide.createIcons(); // re-create shield
+            icon.innerHTML = '';
+            icon.setAttribute('stroke', '#425d59');
+            lucide.createIcons();
 
-            // Ensure spinner is active
             const spinner = document.getElementById('spinner');
             spinner.classList.add('animate-spin');
-            spinner.style.borderColor = ''; // reset to original theme colors
+            spinner.style.borderColor = '';
 
             modal.classList.remove('hidden');
         }
@@ -443,12 +513,10 @@
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-desc').innerText = message;
 
-            // Stop spinner, make it red
             const spinner = document.getElementById('spinner');
             spinner.classList.remove('animate-spin');
             spinner.style.borderColor = '#ef4444';
 
-            // Change icon to X (error)
             const icon = document.getElementById('modal-icon');
             icon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
             icon.setAttribute('viewBox', '0 0 24 24');

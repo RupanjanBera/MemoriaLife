@@ -123,7 +123,7 @@
         .payu-luxury-btn {
             width: 100%;
             padding: 0.9rem 1.5rem;
-            border-radius: 9999px;          /* pill */
+            border-radius: 9999px;
             border: none;
             background: linear-gradient(135deg, #425d59 0%, #567671 100%);
             color: #ffffff;
@@ -159,7 +159,6 @@
             stroke: #ffffff;
         }
 
-        /* Subtle inner shine for luxury feel */
         .payu-luxury-btn::before {
             content: '';
             position: absolute;
@@ -299,7 +298,6 @@
                                         <span class="block text-[10px] text-gray-400 uppercase tracking-wider mb-1">Total Due Now</span>
                                         <span class="text-3xl font-serif font-bold text-brand-800" id="total-due-display">...</span>
                                     </div>
-                                    <!-- No more Test Mode badge -->
                                 </div>
                             </div>
                         </div>
@@ -419,7 +417,7 @@
             container.innerHTML = '';
             const btn = document.createElement('button');
             btn.id = 'payu-checkout-btn';
-            btn.className = 'payu-luxury-btn';  // luxury custom class
+            btn.className = 'payu-luxury-btn';
             btn.innerHTML = '<i data-lucide="lock" class="w-4 h-4"></i> Pay with PayU';
             container.appendChild(btn);
             lucide.createIcons();
@@ -454,8 +452,8 @@
                 planName: planName
             };
 
-            // Use your ngrok URL (update when ngrok restarts)
-            fetch('https://1748-49-37-42-14.ngrok-free.app/create-payment', {
+            // Replace with your current ngrok URL
+            fetch('https://1748-49-37-42-14.ngrok-free.app', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -467,11 +465,13 @@
                     return;
                 }
 
+                // Build form dynamically and POST to PayU hosted checkout
                 const payuForm = document.createElement('form');
                 payuForm.method = 'POST';
                 payuForm.action = 'https://test.payu.in/_payment';
 
-                const fields = ['key', 'txnid', 'amount', 'productinfo', 'firstname', 'email', 'phone', 'surl', 'furl', 'hash', 'txn_s2s_flow', 'service_provider'];
+                // PayU parameters – hash is the FULL hex string from backend
+                const fields = ['key', 'txnid', 'amount', 'productinfo', 'firstname', 'email', 'phone', 'surl', 'furl', 'hash', 'service_provider'];
                 fields.forEach(field => {
                     if (data[field] !== undefined) {
                         const input = document.createElement('input');
